@@ -2,5 +2,7 @@
   "flightcommand.flightcapabilitymissing": "No flight capability present, true OR false",
   "flightcommand.query.nonplayer": "Cannot query flight capability of non-player",
   "flightcommand.query.success": "Flight capability for %s is currently: %s",
-  "flightcommand.apply.success": "Flight capability for %s changed to: %s"
+  "flightcommand.apply.success": "Flight capability for %s changed to: %s",
+  "gamerule.doCreativeFlight": "Enable Creative flight",
+  "gamerule.doCreativeFlight.description": "Enable Creative mode flight in Survival for all players"
 }
