@@ -23,7 +23,7 @@ public class NetworkSetup {
     public static void onCommonSetupEvent(FMLCommonSetupEvent event) {
         simpleChannel = NetworkRegistry.newSimpleChannel(simpleChannelURL, () -> MESSAGE_PROTOCOL_VERSION,
                 MessageHandlerOnClient::isProtocolAcceptedByClient,
-                MessageHandlerOnServer::isProtocolAcceptedByClient
+                MessageHandlerOnServer::isProtocolAcceptedByServer
                 );
 
         simpleChannel.registerMessage(APPLY_FLIGHT_ID, FlightCommandMessageToClient.class,

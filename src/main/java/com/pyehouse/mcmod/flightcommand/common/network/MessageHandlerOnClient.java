@@ -59,6 +59,7 @@ public class MessageHandlerOnClient {
         }
 
         flightCap.setAllowedFlight(message.getFlightAllowed());
+        flightCap.setWorldFlightEnabled(message.isWorldFlightEnabled());
     }
 
 }

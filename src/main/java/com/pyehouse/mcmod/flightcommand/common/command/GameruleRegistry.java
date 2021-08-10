@@ -1,6 +1,5 @@
 package com.pyehouse.mcmod.flightcommand.common.command;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.GameRules.BooleanValue;
 import net.minecraft.world.GameRules.Category;
