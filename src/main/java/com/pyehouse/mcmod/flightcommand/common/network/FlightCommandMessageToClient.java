@@ -10,21 +10,18 @@ public class FlightCommandMessageToClient {
     private boolean messageValid;
     private boolean flightAllowed;
     private boolean worldFlightEnabled;
-    private boolean checkFlight;
 
     public boolean isMessageValid() { return messageValid; }
-    public boolean getFlightAllowed() { return flightAllowed; }
+    public boolean isFlightAllowed() { return flightAllowed; }
     public boolean isWorldFlightEnabled() { return worldFlightEnabled; }
-    public boolean isCheckFlight() { return checkFlight; }
 
     public FlightCommandMessageToClient() {
         messageValid = false;
     }
 
-    public FlightCommandMessageToClient(boolean flightAllowed, boolean worldFlightEnabled, boolean checkFlight) {
+    public FlightCommandMessageToClient(boolean flightAllowed, boolean worldFlightEnabled) {
         this.flightAllowed = flightAllowed;
         this.worldFlightEnabled = worldFlightEnabled;
-        this.checkFlight = checkFlight;
         messageValid = true;
     }
 
@@ -33,7 +30,6 @@ public class FlightCommandMessageToClient {
         try {
             retval.flightAllowed = buf.readBoolean();
             retval.worldFlightEnabled = buf.readBoolean();
-            retval.checkFlight = buf.readBoolean();
         } catch (IllegalArgumentException | IndexOutOfBoundsException e) {
             LOGGER.warn("Exception while reading FlightCommandMessageToClient: " + e);
             return retval;
@@ -47,12 +43,10 @@ public class FlightCommandMessageToClient {
 
         buf.writeBoolean(flightAllowed);
         buf.writeBoolean(worldFlightEnabled);
-        buf.writeBoolean(checkFlight);
     }
 
     @Override
-    public String toString()
-    {
-        return "FlightCommandMessageToClient[flightAllowed=" + Boolean.toString(flightAllowed) + ",worldFlightEnabled=" + Boolean.toString(worldFlightEnabled) + ",checkFlight=" + Boolean.toString(checkFlight) + "]";
+    public String toString() {
+        return "FlightCommandMessageToClient[flightAllowed=" + Boolean.toString(flightAllowed) + ",worldFlightEnabled=" + Boolean.toString(worldFlightEnabled) + "]";
     }
 }

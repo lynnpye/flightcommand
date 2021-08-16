@@ -13,6 +13,7 @@ import net.minecraft.command.Commands;
 import net.minecraft.command.arguments.EntityArgument;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
 import org.apache.logging.log4j.LogManager;
@@ -70,13 +71,13 @@ public class GiveFlightCommand {
 
     static int applyFlightCommand(CommandContext<CommandSource> commandContext) throws CommandSyntaxException {
         Entity entity = EntityArgument.getEntity(commandContext, CMD_player);
-        if (!(entity instanceof PlayerEntity)) {
+        if (!(entity instanceof ServerPlayerEntity)) {
             LOGGER.warn("Cannot query flight capability of non-player");
             commandContext.getSource().sendFailure(makeTC(I18N_NON_PLAYER));
             return 0;
         }
 
-        PlayerEntity player = (PlayerEntity) entity;
+        ServerPlayerEntity player = (ServerPlayerEntity) entity;
         IFlightCapability flightCap = player.getCapability(FlightCapability.CAPABILITY_FLIGHT).orElse(null);
         if (flightCap == null) {
             LOGGER.warn("No flight capability present, true OR false");
@@ -88,9 +89,8 @@ public class GiveFlightCommand {
         boolean worldFlightEnabled = GameruleRegistry.isEnabled(player.getCommandSenderWorld(), GameruleRegistry.doCreativeFlight);
         flightCap.setAllowedFlight(appliedFlightValue);
         flightCap.setWorldFlightEnabled(worldFlightEnabled);
-        flightCap.setShouldCheckFlight(true);
 
-        FlightApplicatorToClient.sendFlightApplication(appliedFlightValue, worldFlightEnabled, true, player);
+        FlightApplicatorToClient.sendFlightApplication(appliedFlightValue, worldFlightEnabled, player);
 
         commandContext.getSource().sendSuccess(makeTC(I18N_APPLY_SUCCESS, player.getGameProfile().getName(), Boolean.toString(appliedFlightValue)), true);
 

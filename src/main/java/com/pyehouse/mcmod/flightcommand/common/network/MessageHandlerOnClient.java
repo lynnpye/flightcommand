@@ -58,7 +58,7 @@ public class MessageHandlerOnClient {
             return;
         }
 
-        flightCap.setAllowedFlight(message.getFlightAllowed());
+        flightCap.setAllowedFlight(message.isFlightAllowed());
         flightCap.setWorldFlightEnabled(message.isWorldFlightEnabled());
     }
 
