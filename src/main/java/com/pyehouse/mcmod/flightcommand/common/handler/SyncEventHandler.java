@@ -1,13 +1,13 @@
 package com.pyehouse.mcmod.flightcommand.common.handler;
 
 import com.pyehouse.mcmod.flightcommand.common.network.FlightApplicatorToClient;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 public class SyncEventHandler {
 
-    public static void syncPlayerData(PlayerEntity player) {
+    public static void syncPlayerData(Player player) {
         FlightApplicatorToClient.sendFlightApplication(player);
     }
 

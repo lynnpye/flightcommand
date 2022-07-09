@@ -1,14 +1,14 @@
 package com.pyehouse.mcmod.flightcommand.common.network;
 
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
-import net.minecraftforge.fml.network.NetworkRegistry;
-import net.minecraftforge.fml.network.simple.SimpleChannel;
+import net.minecraftforge.fmllegacy.network.NetworkRegistry;
+import net.minecraftforge.fmllegacy.network.simple.SimpleChannel;
 
 import java.util.Optional;
 
-import static net.minecraftforge.fml.network.NetworkDirection.PLAY_TO_CLIENT;
+import static net.minecraftforge.fmllegacy.network.NetworkDirection.PLAY_TO_CLIENT;
 
 public class NetworkSetup {
     public static SimpleChannel simpleChannel;

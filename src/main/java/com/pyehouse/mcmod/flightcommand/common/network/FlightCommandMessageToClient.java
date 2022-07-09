@@ -1,6 +1,6 @@
 package com.pyehouse.mcmod.flightcommand.common.network;
 
-import net.minecraft.network.PacketBuffer;
+import net.minecraft.network.FriendlyByteBuf;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -28,7 +28,7 @@ public class FlightCommandMessageToClient {
         messageValid = true;
     }
 
-    public static FlightCommandMessageToClient decode(PacketBuffer buf) {
+    public static FlightCommandMessageToClient decode(FriendlyByteBuf buf) {
         FlightCommandMessageToClient retval = new FlightCommandMessageToClient();
         try {
             retval.flightAllowed = buf.readBoolean();
@@ -42,7 +42,7 @@ public class FlightCommandMessageToClient {
         return retval;
     }
 
-    public void encode(PacketBuffer buf) {
+    public void encode(FriendlyByteBuf buf) {
         if (!messageValid) return;
 
         buf.writeBoolean(flightAllowed);

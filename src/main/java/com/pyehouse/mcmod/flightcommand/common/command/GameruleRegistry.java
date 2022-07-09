@@ -1,13 +1,13 @@
 package com.pyehouse.mcmod.flightcommand.common.command;
 
-import net.minecraft.world.GameRules;
-import net.minecraft.world.GameRules.BooleanValue;
-import net.minecraft.world.GameRules.Category;
-import net.minecraft.world.GameRules.RuleKey;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.GameRules.BooleanValue;
+import net.minecraft.world.level.GameRules.Category;
+import net.minecraft.world.level.GameRules.Key;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,18 +17,21 @@ import java.lang.reflect.Method;
 public class GameruleRegistry {
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public static RuleKey<BooleanValue> doCreativeFlight;
+    public static Key<BooleanValue> doCreativeFlight;
 
     public static void setupGamerules() {
         doCreativeFlight = createBoolean("doCreativeFlight", false, Category.PLAYER);
     }
 
-    private static RuleKey<BooleanValue> createBoolean(String id, boolean defaultVal, Category cat) {
+    private static Key<BooleanValue> createBoolean(String id, boolean defaultVal, Category cat) {
         try {
-            Method m = ObfuscationReflectionHelper.findMethod(GameRules.BooleanValue.class, "func_223571_a", boolean.class);
+            // SRG name: m_46250_(Z)Lnet/minecraft/world/level/GameRules$Type;
+            Method m = //ObfuscationReflectionHelper.findMethod(GameRules.BooleanValue.class, "func_223571_a", boolean.class);
+                    //GameRules.BooleanValue.class.getMethod("m_46250_", boolean.class);
+                    ObfuscationReflectionHelper.findMethod(GameRules.BooleanValue.class, "m_46250_", boolean.class);
             m.setAccessible(true);
-            GameRules.RuleType<BooleanValue> ruleTypeBoolean = (GameRules.RuleType<BooleanValue>) m.invoke(null, defaultVal);
-            RuleKey<BooleanValue> rule = GameRules.register(id, cat, ruleTypeBoolean);
+            GameRules.Type<BooleanValue> ruleTypeBoolean = (GameRules.Type<BooleanValue>) m.invoke(null, defaultVal);
+            Key<BooleanValue> rule = GameRules.register(id, cat, ruleTypeBoolean);
             return rule;
         } catch (Exception e) {
             LOGGER.error("Error setting up gamerules value", e);
@@ -41,14 +44,14 @@ public class GameruleRegistry {
         setupGamerules();
     }
 
-    public static boolean isEnabled(World world, RuleKey<BooleanValue> key) {
+    public static boolean isEnabled(Level world, Key<BooleanValue> key) {
         return world.getGameRules().getBoolean(key);
     }
 
-    public static boolean isEnabled(IWorld world, RuleKey<BooleanValue> key) {
-        if (!(world instanceof World)) {
+    public static boolean isEnabled(LevelAccessor world, Key<BooleanValue> key) {
+        if (!(world instanceof Level)) {
             return false;
         }
-        return ((World) world).getGameRules().getBoolean(key);
+        return ((Level) world).getGameRules().getBoolean(key);
     }
 }

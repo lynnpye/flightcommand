@@ -8,13 +8,13 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pyehouse.mcmod.flightcommand.api.capability.FlightCapability;
 import com.pyehouse.mcmod.flightcommand.api.capability.IFlightCapability;
 import com.pyehouse.mcmod.flightcommand.common.network.FlightApplicatorToClient;
-import net.minecraft.command.CommandSource;
-import net.minecraft.command.Commands;
-import net.minecraft.command.arguments.EntityArgument;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.commands.arguments.EntityArgument;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -30,8 +30,8 @@ public class GiveFlightCommand {
     public static final String I18N_QUERY_SUCCESS = "flightcommand.query.success";
     public static final String I18N_APPLY_SUCCESS = "flightcommand.apply.success";
 
-    public static void register(CommandDispatcher<CommandSource> dispatcher) {
-        LiteralArgumentBuilder<CommandSource> giveFlightCommand =
+    public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
+        LiteralArgumentBuilder<CommandSourceStack> giveFlightCommand =
         Commands.literal(CMD_command)
                 .requires((commandSource) -> commandSource.hasPermission(1))
                 .then(
@@ -44,14 +44,14 @@ public class GiveFlightCommand {
         dispatcher.register(giveFlightCommand);
     }
 
-    static int queryFlight(CommandContext<CommandSource> commandContext) throws CommandSyntaxException {
+    static int queryFlight(CommandContext<CommandSourceStack> commandContext) throws CommandSyntaxException {
         Entity entity = EntityArgument.getEntity(commandContext, CMD_player);
-        if (!(entity instanceof PlayerEntity)) {
+        if (!(entity instanceof Player)) {
             LOGGER.warn("Cannot query flight capability of non-player");
             commandContext.getSource().sendFailure(makeTC(I18N_NON_PLAYER));
             return 0;
         }
-        PlayerEntity player = (PlayerEntity) entity;
+        Player player = (Player) entity;
         IFlightCapability flightCap = player.getCapability(FlightCapability.CAPABILITY_FLIGHT).orElse(null);
         if (flightCap == null) {
             LOGGER.warn("No flight capability present, true OR false");
@@ -64,19 +64,19 @@ public class GiveFlightCommand {
         return 1;
     }
 
-    static ITextComponent makeTC(String id, String... extra) {
-        return new TranslationTextComponent(id, (Object[]) extra);
+    static Component makeTC(String id, String... extra) {
+        return new TranslatableComponent(id, (Object[]) extra);
     }
 
-    static int applyFlightCommand(CommandContext<CommandSource> commandContext) throws CommandSyntaxException {
+    static int applyFlightCommand(CommandContext<CommandSourceStack> commandContext) throws CommandSyntaxException {
         Entity entity = EntityArgument.getEntity(commandContext, CMD_player);
-        if (!(entity instanceof PlayerEntity)) {
+        if (!(entity instanceof Player)) {
             LOGGER.warn("Cannot query flight capability of non-player");
             commandContext.getSource().sendFailure(makeTC(I18N_NON_PLAYER));
             return 0;
         }
 
-        PlayerEntity player = (PlayerEntity) entity;
+        Player player = (Player) entity;
         IFlightCapability flightCap = player.getCapability(FlightCapability.CAPABILITY_FLIGHT).orElse(null);
         if (flightCap == null) {
             LOGGER.warn("No flight capability present, true OR false");

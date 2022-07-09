@@ -3,11 +3,11 @@ package com.pyehouse.mcmod.flightcommand.common.network;
 import com.pyehouse.mcmod.flightcommand.api.capability.FlightCapability;
 import com.pyehouse.mcmod.flightcommand.api.capability.IFlightCapability;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.LogicalSidedProvider;
-import net.minecraftforge.fml.network.NetworkEvent;
+import net.minecraftforge.fmllegacy.LogicalSidedProvider;
+import net.minecraftforge.fmllegacy.network.NetworkEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -36,7 +36,7 @@ public class MessageHandlerOnClient {
             return;
         }
 
-        Optional<ClientWorld> clientWorld = LogicalSidedProvider.CLIENTWORLD.get(sideReceived);
+        Optional<ClientLevel> clientWorld = LogicalSidedProvider.CLIENTWORLD.get(sideReceived);
         if (!clientWorld.isPresent()) {
             LOGGER.warn("FlightCommandMessageToClient context could not provide a ClientWorld");
             return;
@@ -45,12 +45,14 @@ public class MessageHandlerOnClient {
         ctx.enqueueWork(() -> processMessage(clientWorld.get(), message));
     }
 
-    private static void processMessage(ClientWorld clientWorld, FlightCommandMessageToClient message) {
-        PlayerEntity player = Minecraft.getInstance().player;
+    private static void processMessage(ClientLevel clientWorld, FlightCommandMessageToClient message) {
+        Player player = Minecraft.getInstance().player;
         if (player == null) {
             LOGGER.warn("FlightCommandMessageToClient.processMessage: no player available from Minecraft.getInstance().player");
             return;
         }
+
+
 
         IFlightCapability flightCap = player.getCapability(FlightCapability.CAPABILITY_FLIGHT).orElse(null);
         if (flightCap == null) {
