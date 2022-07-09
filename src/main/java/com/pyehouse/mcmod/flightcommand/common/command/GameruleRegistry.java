@@ -26,9 +26,7 @@ public class GameruleRegistry {
     private static Key<BooleanValue> createBoolean(String id, boolean defaultVal, Category cat) {
         try {
             // SRG name: m_46250_(Z)Lnet/minecraft/world/level/GameRules$Type;
-            Method m = //ObfuscationReflectionHelper.findMethod(GameRules.BooleanValue.class, "func_223571_a", boolean.class);
-                    //GameRules.BooleanValue.class.getMethod("m_46250_", boolean.class);
-                    ObfuscationReflectionHelper.findMethod(GameRules.BooleanValue.class, "m_46250_", boolean.class);
+            Method m = ObfuscationReflectionHelper.findMethod(GameRules.BooleanValue.class, "m_46250_", boolean.class);
             m.setAccessible(true);
             GameRules.Type<BooleanValue> ruleTypeBoolean = (GameRules.Type<BooleanValue>) m.invoke(null, defaultVal);
             Key<BooleanValue> rule = GameRules.register(id, cat, ruleTypeBoolean);

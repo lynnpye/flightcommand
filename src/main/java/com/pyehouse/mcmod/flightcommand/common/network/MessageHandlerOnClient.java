@@ -5,9 +5,10 @@ import com.pyehouse.mcmod.flightcommand.api.capability.IFlightCapability;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraftforge.common.util.LogicalSidedProvider;
 import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fmllegacy.LogicalSidedProvider;
-import net.minecraftforge.fmllegacy.network.NetworkEvent;
+import net.minecraftforge.network.NetworkEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -36,7 +37,7 @@ public class MessageHandlerOnClient {
             return;
         }
 
-        Optional<ClientLevel> clientWorld = LogicalSidedProvider.CLIENTWORLD.get(sideReceived);
+        Optional<Level> clientWorld = LogicalSidedProvider.CLIENTWORLD.get(sideReceived);
         if (!clientWorld.isPresent()) {
             LOGGER.warn("FlightCommandMessageToClient context could not provide a ClientWorld");
             return;
@@ -45,7 +46,7 @@ public class MessageHandlerOnClient {
         ctx.enqueueWork(() -> processMessage(clientWorld.get(), message));
     }
 
-    private static void processMessage(ClientLevel clientWorld, FlightCommandMessageToClient message) {
+    private static void processMessage(Level clientWorld, FlightCommandMessageToClient message) {
         Player player = Minecraft.getInstance().player;
         if (player == null) {
             LOGGER.warn("FlightCommandMessageToClient.processMessage: no player available from Minecraft.getInstance().player");
