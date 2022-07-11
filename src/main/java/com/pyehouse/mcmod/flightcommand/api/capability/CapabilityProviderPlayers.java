@@ -36,8 +36,7 @@ public class CapabilityProviderPlayers implements ICapabilitySerializable<Tag> {
     @Override
     public Tag serializeNBT() {
         CompoundTag tag = new CompoundTag();
-        Tag flightTag = //FlightCapability.CAPABILITY_FLIGHT.writeNBT(flightCapability, NO_SPECIFIC_SIDE);
-                this.writeTag();
+        Tag flightTag = this.writeTag();
         tag.put(FLIGHT_NBT, flightTag);
         return tag;
     }
@@ -52,7 +51,6 @@ public class CapabilityProviderPlayers implements ICapabilitySerializable<Tag> {
         Tag flightTag = compoundNBT.get(FLIGHT_NBT);
 
         this.readTag(flightTag);
-        //FlightCapability.CAPABILITY_FLIGHT.readNBT(flightCapability, NO_SPECIFIC_SIDE, flightNBT);
     }
 
 

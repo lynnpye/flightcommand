@@ -3,6 +3,10 @@ Build: 1.17-1.1
         New numbering scheme
         Fixed player cloning issue
 ========
+Build: 1.3
+    hextun01:
+        Updated: 1.18 compatibility
+=========
 Build: 1.2
     hextun01:
         Updated: 1.17 compatibility
