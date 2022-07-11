@@ -37,10 +37,17 @@ public class CapabilityPlayerTickEventHandler {
             flightCap.setShouldCheckFlight(true);
         }
 
+        if (player.tickCount < 40) {
+            flightCap.setShouldCheckFlight(true);
+        }
+
         // now check capabilities and set abilities
         if (!player.getAbilities().mayfly && (isWorldFlightOn(player) || !canRemoveFlightByGamemode(player) || flightCap.isAllowedFlight() || flightCap.isShouldCheckFlight())) {
             // should be able to fly but can't, we can fix that
             player.getAbilities().mayfly = true;
+            if (!player.isOnGround()) {
+                player.getAbilities().flying = true;
+            }
             player.onUpdateAbilities();
         } else if (player.getAbilities().mayfly && !isWorldFlightOn(player) && canRemoveFlightByGamemode(player) && !flightCap.isAllowedFlight() && flightCap.isShouldCheckFlight()) {
             LOGGER.info("Disabling flight and possibly causing fall damage");
