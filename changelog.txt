@@ -5,6 +5,11 @@ Build: 1.18-1.2
 Build: 1.18-1.1
     hextun01:
         New naming scheme
+=======
+Build: 1.17-1.1
+    hextun01:
+        New numbering scheme
+        Fixed player cloning issue
 ========
 Build: 1.3
     hextun01:
