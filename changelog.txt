@@ -1,3 +1,8 @@
+Build: 1.17-1.2
+    hextun01:
+        Force flight checks for the first 40 (currently-non-configurable) ticks of player time.
+        If you log in, can fly, aren't on the ground, and aren't flying, you should be; and now you will be.
+========
 Build: 1.17-1.1
     hextun01:
         New numbering scheme
