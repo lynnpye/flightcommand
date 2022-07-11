@@ -4,8 +4,7 @@ import com.pyehouse.mcmod.flightcommand.api.capability.FlightCapability;
 import com.pyehouse.mcmod.flightcommand.api.capability.IFlightCapability;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.server.level.ServerPlayer;
-
-import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.fmllegacy.network.PacketDistributor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -30,6 +29,7 @@ public class FlightApplicatorToClient {
         }
 
         FlightCommandMessageToClient msg = new FlightCommandMessageToClient(flightCap.isAllowedFlight(), flightCap.isWorldFlightEnabled(), true);
+
         NetworkSetup.simpleChannel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), msg);
     }
 }
