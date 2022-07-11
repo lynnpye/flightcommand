@@ -69,7 +69,13 @@ public class CapabilityPlayerTickEventHandler {
     public static void onPlayerClone(PlayerEvent.Clone event) {
         Player player = event.getPlayer();
         IFlightCapability flightCap = player.getCapability(FlightCapability.CAPABILITY_FLIGHT).orElse(null);
+        if (flightCap == null) {
+            LOGGER.error("Missing IFlightCapability on player");
+            return;
+        }
         IFlightCapability oldFlightCap = event.getOriginal().getCapability(FlightCapability.CAPABILITY_FLIGHT).orElse(null);
-        flightCap.setAllowedFlight(oldFlightCap.isAllowedFlight());
+        if (oldFlightCap != null) {
+            flightCap.setAllowedFlight(oldFlightCap.isAllowedFlight());
+        }
     }
 }
