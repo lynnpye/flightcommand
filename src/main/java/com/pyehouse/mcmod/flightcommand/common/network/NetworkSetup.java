@@ -1,7 +1,11 @@
 package com.pyehouse.mcmod.flightcommand.common.network;
 
+import com.pyehouse.mcmod.flightcommand.api.util.IDeferredSetupRegistrar;
+import com.pyehouse.mcmod.flightcommand.common.command.GameruleRegistry;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.ModLoadingStage;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
@@ -21,15 +25,19 @@ public class NetworkSetup {
 
     @SubscribeEvent
     public static void onCommonSetupEvent(FMLCommonSetupEvent event) {
+        ((IDeferredSetupRegistrar) () -> registration()).common();
+    }
+
+    public static void registration() {
         simpleChannel = NetworkRegistry.newSimpleChannel(simpleChannelURL, () -> MESSAGE_PROTOCOL_VERSION,
                 MessageHandlerOnClient::isProtocolAcceptedByClient,
                 MessageHandlerOnServer::isProtocolAcceptedByServer
-                );
+        );
 
         simpleChannel.registerMessage(APPLY_FLIGHT_ID, FlightCommandMessageToClient.class,
                 FlightCommandMessageToClient::encode, FlightCommandMessageToClient::decode,
                 MessageHandlerOnClient::onMessageReceived,
                 Optional.of(PLAY_TO_CLIENT)
-                );
+        );
     }
 }

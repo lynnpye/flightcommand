@@ -23,7 +23,7 @@ public class FlightCapability implements IFlightCapability {
         CapabilityManager.INSTANCE.register(
                 IFlightCapability.class,
                 new FlightCapabilityNBTStorage(),
-                FlightCapability::createADefaultInstance
+                FlightCapability::new
         );
     }
 
@@ -69,10 +69,6 @@ public class FlightCapability implements IFlightCapability {
             instance.setAllowedFlight(allowedFlight);
             instance.setWorldFlightEnabled(worldFlightEnabled);
         }
-    }
-
-    public static IFlightCapability createADefaultInstance() {
-        return new FlightCapability();
     }
 
     @Override

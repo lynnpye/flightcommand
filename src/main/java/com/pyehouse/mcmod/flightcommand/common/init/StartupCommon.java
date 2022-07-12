@@ -9,7 +9,8 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
-public class StartupCommon {
+class StartupCommon {
+    /*
     @SubscribeEvent
     public static void onCommonSetupEvent(FMLCommonSetupEvent event) {
         // register flight capability
@@ -22,4 +23,6 @@ public class StartupCommon {
         MinecraftForge.EVENT_BUS.register(SyncEventHandler.class);
 
     }
+
+     */
 }

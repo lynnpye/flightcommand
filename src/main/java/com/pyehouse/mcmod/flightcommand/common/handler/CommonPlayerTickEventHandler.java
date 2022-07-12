@@ -45,6 +45,10 @@ public class CommonPlayerTickEventHandler {
 
     @SubscribeEvent
     public static void playerTick(TickEvent.PlayerTickEvent event) {
+        if (event.phase != TickEvent.Phase.START) {
+            return; // move on if we aren't firing early
+        }
+
         PlayerEntity player = event.player;
         if (player == null) {
             LOGGER.error("player is null, skipping");
@@ -85,6 +89,9 @@ public class CommonPlayerTickEventHandler {
                     LOGGER.info("Enabling flight and possibly annoying a genius fox");
                     // should be able to fly but can't, we can fix that
                     player.abilities.mayfly = true;
+                    if (!player.isOnGround()) {
+                        player.abilities.flying = true;
+                    }
                     player.onUpdateAbilities();
                 }
             }

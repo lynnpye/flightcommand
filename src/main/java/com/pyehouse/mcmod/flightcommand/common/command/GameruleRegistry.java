@@ -1,5 +1,6 @@
 package com.pyehouse.mcmod.flightcommand.common.command;
 
+import com.pyehouse.mcmod.flightcommand.api.util.IDeferredSetupRegistrar;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.GameRules.BooleanValue;
 import net.minecraft.world.GameRules.Category;
@@ -7,6 +8,8 @@ import net.minecraft.world.GameRules.RuleKey;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.ModLoadingStage;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import org.apache.logging.log4j.LogManager;
@@ -18,10 +21,6 @@ public class GameruleRegistry {
     private static final Logger LOGGER = LogManager.getLogger();
 
     public static RuleKey<BooleanValue> doCreativeFlight;
-
-    public static void setupGamerules() {
-        doCreativeFlight = createBoolean("doCreativeFlight", false, Category.PLAYER);
-    }
 
     private static RuleKey<BooleanValue> createBoolean(String id, boolean defaultVal, Category cat) {
         try {
@@ -38,17 +37,23 @@ public class GameruleRegistry {
 
     @SubscribeEvent
     public static void onCommonSetupEvent(FMLCommonSetupEvent event) {
-        setupGamerules();
+        ((IDeferredSetupRegistrar) () -> registration()).common();
+    }
+
+    public static void registration() {
+        doCreativeFlight = createBoolean("doCreativeFlight", false, Category.PLAYER);
     }
 
     public static boolean isEnabled(World world, RuleKey<BooleanValue> key) {
         return world.getGameRules().getBoolean(key);
     }
 
+    /*
     public static boolean isEnabled(IWorld world, RuleKey<BooleanValue> key) {
         if (!(world instanceof World)) {
             return false;
         }
         return ((World) world).getGameRules().getBoolean(key);
     }
+     */
 }
