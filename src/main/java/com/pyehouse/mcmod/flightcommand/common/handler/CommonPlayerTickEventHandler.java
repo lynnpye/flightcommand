@@ -45,10 +45,6 @@ public class CommonPlayerTickEventHandler {
 
     @SubscribeEvent
     public static void playerTick(TickEvent.PlayerTickEvent event) {
-        if (event.phase != TickEvent.Phase.START) {
-            return; // move on if we aren't firing early
-        }
-
         PlayerEntity player = event.player;
         if (player == null) {
             LOGGER.error("player is null, skipping");
