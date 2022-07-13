@@ -9,7 +9,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 public class CommandEventRegistryHandler {
     @SubscribeEvent
     public static void onRegisterCommandEvent(RegisterCommandsEvent event) {
-        CommandDispatcher<CommandSourceStack> commandDispatcher = event.getDispatcher();
+        final CommandDispatcher<CommandSourceStack> commandDispatcher = event.getDispatcher();
         GiveFlightCommand.register(commandDispatcher);
     }
 }

@@ -1,4 +1,4 @@
-package com.pyehouse.mcmod.flightcommand.common.util;
+package com.pyehouse.mcmod.flightcommand.api.util;
 
 import net.minecraft.nbt.CompoundTag;
 

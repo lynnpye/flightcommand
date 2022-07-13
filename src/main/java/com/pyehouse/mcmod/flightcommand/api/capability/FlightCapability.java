@@ -1,5 +1,6 @@
 package com.pyehouse.mcmod.flightcommand.api.capability;
 
+import com.pyehouse.mcmod.flightcommand.common.network.ClientUpdateMessage;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.nbt.IntTag;
@@ -10,6 +11,7 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class FlightCapability implements IFlightCapability {
@@ -39,8 +41,25 @@ public class FlightCapability implements IFlightCapability {
     public boolean isShouldCheckFlight() { return shouldCheckFlight; }
     public void setShouldCheckFlight(boolean shouldCheckFlight) { this.shouldCheckFlight = shouldCheckFlight; }
 
-    public static IFlightCapability createADefaultInstance() {
-        return new FlightCapability();
+    @Override
+    public void copyFrom(@Nonnull IFlightCapability other) {
+        if (other == null) return;
+        this.setAllowedFlight(other.isAllowedFlight());
+        this.setWorldFlightEnabled(other.isWorldFlightEnabled());
+        this.setShouldCheckFlight(other.isShouldCheckFlight());
+    }
+
+    @Override
+    public void copyFrom(@Nonnull ClientUpdateMessage other) {
+        if (other == null) return;
+        this.setAllowedFlight(other.isFlightAllowed());
+        this.setWorldFlightEnabled(other.isWorldFlightEnabled());
+        this.setShouldCheckFlight(other.isCheckFlight());
+    }
+
+    @Override
+    public String toString() {
+        return String.format("FlightCapability{allowedFlight[%s] worldFlightEnabled[%s]}", this.allowedFlight, this.worldFlightEnabled);
     }
 
 }

@@ -1,5 +1,7 @@
 package com.pyehouse.mcmod.flightcommand.common.command;
 
+import com.pyehouse.mcmod.flightcommand.api.util.IDeferredSetupRegistrar;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.GameRules.BooleanValue;
 import net.minecraft.world.level.GameRules.Category;
@@ -11,17 +13,14 @@ import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.codehaus.plexus.util.ExceptionUtils;
 
 import java.lang.reflect.Method;
 
-public class GameruleRegistry {
+public class GameruleRegistrar {
     private static final Logger LOGGER = LogManager.getLogger();
 
     public static Key<BooleanValue> doCreativeFlight;
-
-    public static void setupGamerules() {
-        doCreativeFlight = createBoolean("doCreativeFlight", false, Category.PLAYER);
-    }
 
     private static Key<BooleanValue> createBoolean(String id, boolean defaultVal, Category cat) {
         try {
@@ -39,17 +38,19 @@ public class GameruleRegistry {
 
     @SubscribeEvent
     public static void onCommonSetupEvent(FMLCommonSetupEvent event) {
-        setupGamerules();
+        ((IDeferredSetupRegistrar) () -> registration()).common();
     }
 
-    public static boolean isEnabled(Level world, Key<BooleanValue> key) {
-        return world.getGameRules().getBoolean(key);
+    public static void registration() {
+        doCreativeFlight = createBoolean("doCreativeFlight", false, Category.PLAYER);
     }
 
-    public static boolean isEnabled(LevelAccessor world, Key<BooleanValue> key) {
-        if (!(world instanceof Level)) {
+    public static boolean isCreativeFlightEnabled(Player player) {
+        try {
+            return player.getCommandSenderWorld().getGameRules().getBoolean(GameruleRegistrar.doCreativeFlight);
+        } catch (Exception e) {
+            LOGGER.warn(ExceptionUtils.getStackTrace(e));
             return false;
         }
-        return ((Level) world).getGameRules().getBoolean(key);
     }
 }

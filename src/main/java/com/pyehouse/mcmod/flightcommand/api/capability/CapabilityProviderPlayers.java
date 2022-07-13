@@ -1,6 +1,6 @@
 package com.pyehouse.mcmod.flightcommand.api.capability;
 
-import com.pyehouse.mcmod.flightcommand.common.util.DataHelper;
+import com.pyehouse.mcmod.flightcommand.api.util.DataHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntTag;
 import net.minecraft.nbt.Tag;

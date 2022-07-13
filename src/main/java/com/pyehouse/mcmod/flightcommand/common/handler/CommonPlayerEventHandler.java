@@ -2,7 +2,7 @@ package com.pyehouse.mcmod.flightcommand.common.handler;
 
 import com.pyehouse.mcmod.flightcommand.api.capability.FlightCapability;
 import com.pyehouse.mcmod.flightcommand.api.capability.IFlightCapability;
-import com.pyehouse.mcmod.flightcommand.common.command.GameruleRegistry;
+import com.pyehouse.mcmod.flightcommand.common.command.GameruleRegistrar;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -10,7 +10,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class CapabilityPlayerTickEventHandler {
+public class CommonPlayerEventHandler {
 
     private static final Logger LOGGER = LogManager.getLogger();
 
@@ -25,15 +25,16 @@ public class CapabilityPlayerTickEventHandler {
             LOGGER.error("player is null, skipping");
             return; // no player, leave
         }
-
         IFlightCapability flightCap = player.getCapability(FlightCapability.CAPABILITY_FLIGHT).orElse(null);
 
         if (flightCap == null) {
             return; // no capability present for some reason
         }
 
-        if (flightCap.isWorldFlightEnabled() != GameruleRegistry.isEnabled(player.getCommandSenderWorld(), GameruleRegistry.doCreativeFlight)) {
-            flightCap.setWorldFlightEnabled(!flightCap.isWorldFlightEnabled());
+        boolean isCreativeFlightRuleEnabled = GameruleRegistrar.isCreativeFlightEnabled(player);
+
+        if (flightCap.isWorldFlightEnabled() != isCreativeFlightRuleEnabled) {
+            flightCap.setWorldFlightEnabled(isCreativeFlightRuleEnabled);
             flightCap.setShouldCheckFlight(true);
         }
 
@@ -41,31 +42,23 @@ public class CapabilityPlayerTickEventHandler {
             flightCap.setShouldCheckFlight(true);
         }
 
-        // now check capabilities and set abilities
-        if (!player.getAbilities().mayfly && (isWorldFlightOn(player) || !canRemoveFlightByGamemode(player) || flightCap.isAllowedFlight() || flightCap.isShouldCheckFlight())) {
-            // should be able to fly but can't, we can fix that
-            player.getAbilities().mayfly = true;
-            if (!player.isOnGround()) {
-                player.getAbilities().flying = true;
-            }
-            player.onUpdateAbilities();
-        } else if (player.getAbilities().mayfly && !isWorldFlightOn(player) && canRemoveFlightByGamemode(player) && !flightCap.isAllowedFlight() && flightCap.isShouldCheckFlight()) {
-            LOGGER.info("Disabling flight and possibly causing fall damage");
-            player.getAbilities().mayfly = false; // hopefully anything else allowing flight will revert this
-            if (player.getAbilities().flying) {
-                player.getAbilities().flying = false; // and you should no longer be flying
-            }
-            player.onUpdateAbilities();
-            flightCap.setShouldCheckFlight(false);
+        if (!flightCap.isShouldCheckFlight()) {
+            return;
         }
-    }
 
-    private static boolean isWorldFlightOn(Player player) {
-        try {
-            return player.getCommandSenderWorld().getGameRules().getBoolean(GameruleRegistry.doCreativeFlight);
-        } catch (Exception e) {
-            return false;
-        }
+        boolean modeProhibitsFlightRemoval = !canRemoveFlightByGamemode(player);
+
+        boolean canfly = isCreativeFlightRuleEnabled || flightCap.isAllowedFlight() || modeProhibitsFlightRemoval;
+
+        player.getAbilities().mayfly = canfly;
+        player.getAbilities().flying =
+                (modeProhibitsFlightRemoval && player.getAbilities().flying)
+                || !(modeProhibitsFlightRemoval || (
+                        canfly && !player.isOnGround()
+                        ));
+
+        player.onUpdateAbilities();
+        flightCap.setShouldCheckFlight(false);
     }
 
     private static boolean canRemoveFlightByGamemode(Player player) {
@@ -82,7 +75,8 @@ public class CapabilityPlayerTickEventHandler {
         }
         IFlightCapability oldFlightCap = event.getOriginal().getCapability(FlightCapability.CAPABILITY_FLIGHT).orElse(null);
         if (oldFlightCap != null) {
-            flightCap.setAllowedFlight(oldFlightCap.isAllowedFlight());
+            flightCap.copyFrom(oldFlightCap);
         }
     }
+
 }

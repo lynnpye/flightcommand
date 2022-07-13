@@ -1,5 +1,9 @@
 package com.pyehouse.mcmod.flightcommand.api.capability;
 
+import com.pyehouse.mcmod.flightcommand.common.network.ClientUpdateMessage;
+
+import javax.annotation.Nonnull;
+
 public interface IFlightCapability {
     boolean isAllowedFlight();
     void setAllowedFlight(boolean allowedFlight);
@@ -7,4 +11,6 @@ public interface IFlightCapability {
     void setShouldCheckFlight(boolean checkFlight);
     boolean isWorldFlightEnabled();
     void setWorldFlightEnabled(boolean worldFlightEnabled);
+    void copyFrom(@Nonnull IFlightCapability other);
+    void copyFrom(@Nonnull ClientUpdateMessage other);
 }

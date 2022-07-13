@@ -8,7 +8,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import static com.pyehouse.mcmod.flightcommand.api.capability.FlightCapability.FlightCapabilityResourceURL;
 
-public class CapabilityAttachEventHandler {
+public class CommonCapabilityAttachEventHandler {
     @SubscribeEvent
     public static void attachCapabilityToEntityHandler(AttachCapabilitiesEvent<Entity> event) {
         Entity entity = event.getObject();
