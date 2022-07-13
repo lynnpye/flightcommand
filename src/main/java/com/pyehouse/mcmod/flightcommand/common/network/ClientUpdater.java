@@ -2,18 +2,18 @@ package com.pyehouse.mcmod.flightcommand.common.network;
 
 import com.pyehouse.mcmod.flightcommand.api.capability.FlightCapability;
 import com.pyehouse.mcmod.flightcommand.api.capability.IFlightCapability;
+import com.pyehouse.mcmod.flightcommand.common.command.GameruleRegistrar;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.server.level.ServerPlayer;
-
-import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.fmllegacy.network.PacketDistributor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class FlightApplicatorToClient {
+public class ClientUpdater {
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public static void sendFlightApplication(boolean applyFlight, boolean worldFlightEnabled, boolean checkFlight, Player playerEntity) {
-        FlightCommandMessageToClient msg = new FlightCommandMessageToClient(applyFlight, worldFlightEnabled, checkFlight);
+    public static void sendFlightApplication(boolean applyFlight, boolean worldFlightEnabled, Player playerEntity) {
+        ClientUpdateMessage msg = new ClientUpdateMessage(applyFlight, worldFlightEnabled, true);
         NetworkSetup.simpleChannel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) playerEntity), msg);
     }
 
@@ -29,7 +29,6 @@ public class FlightApplicatorToClient {
             return;
         }
 
-        FlightCommandMessageToClient msg = new FlightCommandMessageToClient(flightCap.isAllowedFlight(), flightCap.isWorldFlightEnabled(), true);
-        NetworkSetup.simpleChannel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), msg);
+        sendFlightApplication(flightCap.isAllowedFlight(), GameruleRegistrar.isCreativeFlightEnabled(player), player);
     }
 }
