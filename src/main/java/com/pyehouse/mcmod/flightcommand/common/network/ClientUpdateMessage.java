@@ -4,7 +4,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class FlightCommandMessageToClient {
+public class ClientUpdateMessage {
     private static final Logger LOGGER = LogManager.getLogger();
 
     private boolean messageValid;
@@ -13,23 +13,23 @@ public class FlightCommandMessageToClient {
     private boolean checkFlight;
 
     public boolean isMessageValid() { return messageValid; }
-    public boolean getFlightAllowed() { return flightAllowed; }
+    public boolean isFlightAllowed() { return flightAllowed; }
     public boolean isWorldFlightEnabled() { return worldFlightEnabled; }
     public boolean isCheckFlight() { return checkFlight; }
 
-    public FlightCommandMessageToClient() {
+    public ClientUpdateMessage() {
         messageValid = false;
     }
 
-    public FlightCommandMessageToClient(boolean flightAllowed, boolean worldFlightEnabled, boolean checkFlight) {
+    public ClientUpdateMessage(boolean flightAllowed, boolean worldFlightEnabled, boolean checkFlight) {
         this.flightAllowed = flightAllowed;
         this.worldFlightEnabled = worldFlightEnabled;
         this.checkFlight = checkFlight;
         messageValid = true;
     }
 
-    public static FlightCommandMessageToClient decode(FriendlyByteBuf buf) {
-        FlightCommandMessageToClient retval = new FlightCommandMessageToClient();
+    public static ClientUpdateMessage decode(FriendlyByteBuf buf) {
+        ClientUpdateMessage retval = new ClientUpdateMessage();
         try {
             retval.flightAllowed = buf.readBoolean();
             retval.worldFlightEnabled = buf.readBoolean();
@@ -51,8 +51,7 @@ public class FlightCommandMessageToClient {
     }
 
     @Override
-    public String toString()
-    {
-        return "FlightCommandMessageToClient[flightAllowed=" + Boolean.toString(flightAllowed) + ",worldFlightEnabled=" + Boolean.toString(worldFlightEnabled) + ",checkFlight=" + Boolean.toString(checkFlight) + "]";
+    public String toString() {
+        return "FlightCommandMessageToClient[flightAllowed=" + Boolean.toString(flightAllowed) + ",worldFlightEnabled=" + Boolean.toString(worldFlightEnabled) + "]";
     }
 }
