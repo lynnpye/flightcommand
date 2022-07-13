@@ -14,7 +14,6 @@ import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -65,7 +64,7 @@ public class GiveFlightCommand {
     }
 
     static Component makeTC(String id, String... extra) {
-        return new TranslatableComponent(id, (Object[]) extra);
+        return Component.translatable(id, (Object[]) extra);
     }
 
     static int applyFlightCommand(CommandContext<CommandSourceStack> commandContext) throws CommandSyntaxException {
