@@ -46,16 +46,16 @@ public class CommonPlayerEventHandler {
             return;
         }
 
-        boolean modeProhibitsFlightRemoval = !canRemoveFlightByGamemode(player);
+        boolean isFlying = player.abilities.flying;
+        boolean isGrounded = player.isOnGround();
+        boolean modeAllowsFlight = canRemoveFlightByGamemode(player);
+        boolean weAllowFlight = isCreativeFlightRuleEnabled || flightCap.isAllowedFlight();
+        boolean canFly = modeAllowsFlight || weAllowFlight;
 
-        boolean canfly = isCreativeFlightRuleEnabled || flightCap.isAllowedFlight() || modeProhibitsFlightRemoval;
-
-        player.abilities.mayfly = canfly;
         player.abilities.flying =
-                (modeProhibitsFlightRemoval && player.abilities.flying)
-                || !(modeProhibitsFlightRemoval || (
-                        canfly && !player.isOnGround()
-                        ));
+                !isGrounded
+                        && (isFlying != canFly || isFlying)
+        ;
 
         player.onUpdateAbilities();
         flightCap.setShouldCheckFlight(false);

@@ -1,6 +1,5 @@
 package com.pyehouse.mcmod.flightcommand.common.command;
 
-import com.pyehouse.mcmod.flightcommand.api.util.IDeferredSetupRegistrar;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.GameRules.BooleanValue;
@@ -35,7 +34,7 @@ public class GameruleRegistrar {
 
     @SubscribeEvent
     public static void onCommonSetupEvent(FMLCommonSetupEvent event) {
-        ((IDeferredSetupRegistrar) () -> registration()).common();
+        event.enqueueWork(() -> registration());
     }
 
     public static void registration() {

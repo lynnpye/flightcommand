@@ -1,8 +1,6 @@
 package com.pyehouse.mcmod.flightcommand.common.handler;
 
 import com.mojang.brigadier.CommandDispatcher;
-import com.pyehouse.mcmod.flightcommand.api.util.IDeferredSetupRegistrar;
-import com.pyehouse.mcmod.flightcommand.common.CommonEventRegistrar;
 import com.pyehouse.mcmod.flightcommand.common.command.GiveFlightCommand;
 import net.minecraft.command.CommandSource;
 import net.minecraftforge.event.RegisterCommandsEvent;
