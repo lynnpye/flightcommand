@@ -1,13 +1,10 @@
 package com.pyehouse.mcmod.flightcommand.common.command;
 
-import com.pyehouse.mcmod.flightcommand.api.util.IDeferredSetupRegistrar;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.GameRules.BooleanValue;
 import net.minecraft.world.level.GameRules.Category;
 import net.minecraft.world.level.GameRules.Key;
-import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.Level;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -38,7 +35,7 @@ public class GameruleRegistrar {
 
     @SubscribeEvent
     public static void onCommonSetupEvent(FMLCommonSetupEvent event) {
-        ((IDeferredSetupRegistrar) () -> registration()).common();
+        event.enqueueWork(() -> registration());
     }
 
     public static void registration() {

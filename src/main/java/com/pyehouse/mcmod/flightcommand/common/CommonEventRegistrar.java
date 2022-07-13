@@ -21,8 +21,8 @@ public class CommonEventRegistrar extends ModEventRegistrar {
     }
 
     public void registration() {
-        modEventBus.register(NetworkSetup.class);
         modEventBus.register(GameruleRegistrar.class);
+        modEventBus.register(NetworkSetup.class);
 
         forgeEventBus.register(RegisterCapabilitiesEventHandler.class);
         forgeEventBus.register(CommandEventRegistryHandler.class);

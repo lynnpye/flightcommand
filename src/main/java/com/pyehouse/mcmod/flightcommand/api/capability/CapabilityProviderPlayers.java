@@ -16,18 +16,17 @@ import javax.annotation.Nullable;
 
 public class CapabilityProviderPlayers implements ICapabilitySerializable<Tag> {
 
-    private final Direction NO_SPECIFIC_SIDE = null;
-
     private static final Logger LOGGER = LogManager.getLogger();
 
     private final static String FLIGHT_NBT = "flight";
-    private FlightCapability flightCapability = new FlightCapability();
+    private IFlightCapability flightCapability = new FlightCapability();
+    private final LazyOptional<IFlightCapability> flightCapLazyOptional = LazyOptional.of(() -> this.flightCapability);
 
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        if (FlightCapability.CAPABILITY_FLIGHT == cap) {
-            return (LazyOptional<T>)LazyOptional.of(() -> flightCapability);
+        if (cap == FlightCapability.CAPABILITY_FLIGHT) {
+            return FlightCapability.CAPABILITY_FLIGHT.orEmpty(cap, this.flightCapLazyOptional);
         }
 
         return LazyOptional.empty();
@@ -52,7 +51,6 @@ public class CapabilityProviderPlayers implements ICapabilitySerializable<Tag> {
 
         this.readTag(flightTag);
     }
-
 
     private final String KEY_ALLOWED_FLIGHT = "allowedFlight";
     private final String KEY_WORLDFLIGHT_ENABLED = "worldFlightEnabled";

@@ -1,6 +1,5 @@
 package com.pyehouse.mcmod.flightcommand.common.network;
 
-import com.pyehouse.mcmod.flightcommand.api.util.IDeferredSetupRegistrar;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -26,7 +25,7 @@ public class NetworkSetup {
 
     @SubscribeEvent
     public static void onCommonSetupEvent(FMLCommonSetupEvent event) {
-        ((IDeferredSetupRegistrar) () -> registration()).common();
+        event.enqueueWork(() -> registration());
     }
 
     public static void registration() {
