@@ -38,10 +38,6 @@ public class CommonPlayerEventHandler {
             flightCap.setShouldCheckFlight(true);
         }
 
-        if (player.tickCount < 40) {
-            flightCap.setShouldCheckFlight(true);
-        }
-
         if (!flightCap.isShouldCheckFlight()) {
             return;
         }
