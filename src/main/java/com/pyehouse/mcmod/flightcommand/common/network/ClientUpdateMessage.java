@@ -4,32 +4,36 @@ import net.minecraft.network.PacketBuffer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class FlightCommandMessageToClient {
+public class ClientUpdateMessage {
     private static final Logger LOGGER = LogManager.getLogger();
 
     private boolean messageValid;
     private boolean flightAllowed;
     private boolean worldFlightEnabled;
+    private boolean checkFlight;
 
     public boolean isMessageValid() { return messageValid; }
     public boolean isFlightAllowed() { return flightAllowed; }
     public boolean isWorldFlightEnabled() { return worldFlightEnabled; }
+    public boolean isCheckFlight() { return checkFlight; }
 
-    public FlightCommandMessageToClient() {
+    public ClientUpdateMessage() {
         messageValid = false;
     }
 
-    public FlightCommandMessageToClient(boolean flightAllowed, boolean worldFlightEnabled) {
+    public ClientUpdateMessage(boolean flightAllowed, boolean worldFlightEnabled, boolean checkFlight) {
         this.flightAllowed = flightAllowed;
         this.worldFlightEnabled = worldFlightEnabled;
+        this.checkFlight = checkFlight;
         messageValid = true;
     }
 
-    public static FlightCommandMessageToClient decode(PacketBuffer buf) {
-        FlightCommandMessageToClient retval = new FlightCommandMessageToClient();
+    public static ClientUpdateMessage decode(PacketBuffer buf) {
+        ClientUpdateMessage retval = new ClientUpdateMessage();
         try {
             retval.flightAllowed = buf.readBoolean();
             retval.worldFlightEnabled = buf.readBoolean();
+            retval.checkFlight = buf.readBoolean();
         } catch (IllegalArgumentException | IndexOutOfBoundsException e) {
             LOGGER.warn("Exception while reading FlightCommandMessageToClient: " + e);
             return retval;
@@ -43,6 +47,7 @@ public class FlightCommandMessageToClient {
 
         buf.writeBoolean(flightAllowed);
         buf.writeBoolean(worldFlightEnabled);
+        buf.writeBoolean(checkFlight);
     }
 
     @Override

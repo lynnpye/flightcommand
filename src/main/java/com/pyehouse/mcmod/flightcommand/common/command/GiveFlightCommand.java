@@ -7,7 +7,7 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pyehouse.mcmod.flightcommand.api.capability.FlightCapability;
 import com.pyehouse.mcmod.flightcommand.api.capability.IFlightCapability;
-import com.pyehouse.mcmod.flightcommand.common.network.FlightApplicatorToClient;
+import com.pyehouse.mcmod.flightcommand.common.network.ClientUpdater;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.command.arguments.EntityArgument;
@@ -86,11 +86,12 @@ public class GiveFlightCommand {
         }
 
         boolean appliedFlightValue = BoolArgumentType.getBool(commandContext, CMD_value);
-        boolean worldFlightEnabled = GameruleRegistry.isEnabled(player.getCommandSenderWorld(), GameruleRegistry.doCreativeFlight);
+        boolean worldFlightEnabled = GameruleRegistrar.isCreativeFlightEnabled(player);
         flightCap.setAllowedFlight(appliedFlightValue);
         flightCap.setWorldFlightEnabled(worldFlightEnabled);
+        flightCap.setShouldCheckFlight(true);
 
-        FlightApplicatorToClient.sendFlightApplication(appliedFlightValue, worldFlightEnabled, player);
+        ClientUpdater.sendFlightApplication(appliedFlightValue, worldFlightEnabled, player);
 
         commandContext.getSource().sendSuccess(makeTC(I18N_APPLY_SUCCESS, player.getGameProfile().getName(), Boolean.toString(appliedFlightValue)), true);
 

@@ -1,3 +1,8 @@
+Build: 1.16-1.1
+    hextun01:
+        Fixed: so much was wrong with how the event handling was coded I don't even know how it worked at all
+        Should be much much better now, including proper dedicated server support (still required on both sides)
+========
 Build: 1.1
     hextun01:
         Fixed: gamerule doesn't reapply on restart and other issues

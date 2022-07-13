@@ -13,6 +13,5 @@ public class ServerEventRegistrar extends ModEventRegistrar {
     }
 
     public void registration() {
-
     }
 }
