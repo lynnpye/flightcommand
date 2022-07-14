@@ -77,18 +77,4 @@ public class CommonPlayerEventHandler {
         flightCap.setShouldCheckFlight(false);
     }
 
-    @SubscribeEvent
-    public static void onPlayerClone(PlayerEvent.Clone event) {
-        PlayerEntity player = event.getPlayer();
-        IFlightCapability flightCap = player.getCapability(FlightCapability.CAPABILITY_FLIGHT).orElse(null);
-        if (flightCap == null) {
-            LOGGER.error("Missing IFlightCapability on player");
-            return;
-        }
-        IFlightCapability oldFlightCap = event.getOriginal().getCapability(FlightCapability.CAPABILITY_FLIGHT).orElse(null);
-        if (oldFlightCap != null) {
-            flightCap.copyFrom(oldFlightCap);
-        }
-    }
-
 }
