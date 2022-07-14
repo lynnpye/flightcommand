@@ -16,7 +16,9 @@ public class CommonCapabilityAttachEventHandler {
     public static void attachCapabilityToEntityHandler(AttachCapabilitiesEvent<Entity> event) {
         Entity entity = event.getObject();
         if (entity instanceof Player) {
-            event.addCapability(FlightCapabilityResourceURL, new CapabilityProviderPlayers());
+            CapabilityProviderPlayers capProvider = new CapabilityProviderPlayers();
+            event.addCapability(FlightCapabilityResourceURL, capProvider);
+            event.addListener(capProvider::invalidate);
         }
     }
 }

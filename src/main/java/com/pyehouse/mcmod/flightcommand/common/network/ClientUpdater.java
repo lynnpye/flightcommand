@@ -23,12 +23,8 @@ public class ClientUpdater {
             return;
         }
 
-        IFlightCapability flightCap = player.getCapability(FlightCapability.CAPABILITY_FLIGHT).orElse(null);
-        if (flightCap == null) {
-            LOGGER.error("Missing IFlightCapability");
-            return;
-        }
-
-        sendFlightApplication(flightCap.isAllowedFlight(), GameruleRegistrar.isCreativeFlightEnabled(player), player);
+        player.getCapability(FlightCapability.CAPABILITY_FLIGHT).ifPresent(capFlight -> {
+            sendFlightApplication(capFlight.isAllowedFlight(), GameruleRegistrar.isCreativeFlightEnabled(player), player);
+        });
     }
 }

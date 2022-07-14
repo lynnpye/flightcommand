@@ -32,6 +32,10 @@ public class CapabilityProviderPlayers implements ICapabilitySerializable<Tag> {
         return LazyOptional.empty();
     }
 
+    public void invalidate() {
+        flightCapLazyOptional.invalidate();
+    }
+
     @Override
     public Tag serializeNBT() {
         CompoundTag tag = new CompoundTag();

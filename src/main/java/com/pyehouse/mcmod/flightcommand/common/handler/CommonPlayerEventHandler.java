@@ -77,22 +77,4 @@ public class CommonPlayerEventHandler {
         flightCap.setShouldCheckFlight(false);
     }
 
-    private static boolean canRemoveFlightByGamemode(Player player) {
-        return !(player.isSpectator() || player.isCreative());
-    }
-
-    @SubscribeEvent
-    public static void onPlayerClone(PlayerEvent.Clone event) {
-        Player player = event.getPlayer();
-        IFlightCapability flightCap = player.getCapability(FlightCapability.CAPABILITY_FLIGHT).orElse(null);
-        if (flightCap == null) {
-            LOGGER.error("Missing IFlightCapability on player");
-            return;
-        }
-        IFlightCapability oldFlightCap = event.getOriginal().getCapability(FlightCapability.CAPABILITY_FLIGHT).orElse(null);
-        if (oldFlightCap != null) {
-            flightCap.copyFrom(oldFlightCap);
-        }
-    }
-
 }
