@@ -75,26 +75,30 @@ public class FlightCapability implements IFlightCapability {
         @Override
         public INBT writeNBT(Capability<IFlightCapability> capability, IFlightCapability instance, Direction side) {
             CompoundNBT compoundNBT = new CompoundNBT();
-            compoundNBT.put(KEY_ALLOWED_FLIGHT, IntNBT.valueOf(instance.isAllowedFlight() ? 1 : 0));
-            compoundNBT.put(KEY_WORLDFLIGHT_ENABLED, IntNBT.valueOf(instance.isWorldFlightEnabled() ? 1 : 0));
-            compoundNBT.put(KEY_CHECK_FLIGHT, IntNBT.valueOf(instance.isShouldCheckFlight() ? 1 : 0));
+            if (instance != null) {
+                compoundNBT.put(KEY_ALLOWED_FLIGHT, IntNBT.valueOf(instance.isAllowedFlight() ? 1 : 0));
+                compoundNBT.put(KEY_WORLDFLIGHT_ENABLED, IntNBT.valueOf(instance.isWorldFlightEnabled() ? 1 : 0));
+                compoundNBT.put(KEY_CHECK_FLIGHT, IntNBT.valueOf(instance.isShouldCheckFlight() ? 1 : 0));
+            }
             return compoundNBT;
         }
 
         @Override
         public void readNBT(Capability<IFlightCapability> capability, IFlightCapability instance, Direction side, INBT nbt) {
-            boolean allowedFlight = false;
-            boolean worldFlightEnabled = false;
-            boolean shouldCheck = false;
-            if (nbt instanceof CompoundNBT) {
-                CompoundNBT compoundNBT = (CompoundNBT) nbt;
-                allowedFlight = compoundNBT.getInt(KEY_ALLOWED_FLIGHT) != 0;
-                worldFlightEnabled = compoundNBT.getInt(KEY_WORLDFLIGHT_ENABLED) != 0;
-                shouldCheck = compoundNBT.getInt(KEY_CHECK_FLIGHT) != 0;
+            if (instance != null) {
+                boolean allowedFlight = false;
+                boolean worldFlightEnabled = false;
+                boolean shouldCheck = false;
+                if (nbt instanceof CompoundNBT) {
+                    CompoundNBT compoundNBT = (CompoundNBT) nbt;
+                    allowedFlight = compoundNBT.getInt(KEY_ALLOWED_FLIGHT) != 0;
+                    worldFlightEnabled = compoundNBT.getInt(KEY_WORLDFLIGHT_ENABLED) != 0;
+                    shouldCheck = compoundNBT.getInt(KEY_CHECK_FLIGHT) != 0;
+                }
+                instance.setAllowedFlight(allowedFlight);
+                instance.setWorldFlightEnabled(worldFlightEnabled);
+                instance.setShouldCheckFlight(shouldCheck);
             }
-            instance.setAllowedFlight(allowedFlight);
-            instance.setWorldFlightEnabled(worldFlightEnabled);
-            instance.setShouldCheckFlight(shouldCheck);
         }
     }
 

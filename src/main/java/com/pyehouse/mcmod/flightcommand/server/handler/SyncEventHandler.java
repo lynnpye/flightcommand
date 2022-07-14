@@ -34,15 +34,10 @@ public class SyncEventHandler {
 
     @SubscribeEvent
     public static void onPlayerClone(PlayerEvent.Clone event) {
-        PlayerEntity player = event.getPlayer();
-        IFlightCapability flightCap = player.getCapability(FlightCapability.CAPABILITY_FLIGHT).orElse(null);
-        if (flightCap == null) {
-            LOGGER.error("Missing IFlightCapability on player");
-            return;
-        }
-        IFlightCapability oldFlightCap = event.getOriginal().getCapability(FlightCapability.CAPABILITY_FLIGHT).orElse(null);
-        if (oldFlightCap != null) {
-            flightCap.copyFrom(oldFlightCap);
-        }
+        event.getOriginal().getCapability(FlightCapability.CAPABILITY_FLIGHT).ifPresent(oldStore -> {
+            event.getPlayer().getCapability(FlightCapability.CAPABILITY_FLIGHT).ifPresent(newStore -> {
+                newStore.copyFrom(oldStore);
+            });
+        });
     }
 }
