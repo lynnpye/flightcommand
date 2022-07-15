@@ -25,11 +25,11 @@ public class CapabilityProviderPlayers implements ICapabilitySerializable<Tag> {
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        if (cap == FlightCapability.CAPABILITY_FLIGHT) {
-            return FlightCapability.CAPABILITY_FLIGHT.orEmpty(cap, this.flightCapLazyOptional);
-        }
+        return FlightCapability.CAPABILITY_FLIGHT.orEmpty(cap, flightCapLazyOptional);
+    }
 
-        return LazyOptional.empty();
+    public IFlightCapability getFlightCapability() {
+        return flightCapability;
     }
 
     public void invalidate() {
@@ -62,24 +62,28 @@ public class CapabilityProviderPlayers implements ICapabilitySerializable<Tag> {
 
     private Tag writeTag() {
         CompoundTag tag = new CompoundTag();
-        tag.put(KEY_ALLOWED_FLIGHT, IntTag.valueOf(flightCapability.isAllowedFlight() ? 1 : 0));
-        tag.put(KEY_WORLDFLIGHT_ENABLED, IntTag.valueOf(flightCapability.isWorldFlightEnabled() ? 1 : 0));
-        tag.put(KEY_CHECK_FLIGHT, IntTag.valueOf(flightCapability.isShouldCheckFlight() ? 1 : 0));
+        flightCapLazyOptional.ifPresent(fcap -> {
+            tag.put(KEY_ALLOWED_FLIGHT, IntTag.valueOf(fcap.isAllowedFlight() ? 1 : 0));
+            tag.put(KEY_WORLDFLIGHT_ENABLED, IntTag.valueOf(fcap.isWorldFlightEnabled() ? 1 : 0));
+            tag.put(KEY_CHECK_FLIGHT, IntTag.valueOf(fcap.isShouldCheckFlight() ? 1 : 0));
+        });
         return tag;
     }
 
     private void readTag(Tag tag) {
-        boolean allowedFlight = false;
-        boolean worldFlightEnabled = false;
-        boolean shouldCheckFlight = true;
-        if (tag instanceof  CompoundTag) {
-            CompoundTag compoundTag = (CompoundTag) tag;
-            allowedFlight = compoundTag.getInt(KEY_ALLOWED_FLIGHT) != 0;
-            worldFlightEnabled = compoundTag.getInt(KEY_WORLDFLIGHT_ENABLED) != 0;
-            shouldCheckFlight = compoundTag.getInt(KEY_CHECK_FLIGHT) != 0;
-        }
-        flightCapability.setAllowedFlight(allowedFlight);
-        flightCapability.setWorldFlightEnabled(worldFlightEnabled);
-        flightCapability.setShouldCheckFlight(shouldCheckFlight);
+        flightCapLazyOptional.ifPresent(fcap -> {
+            boolean allowedFlight = false;
+            boolean worldFlightEnabled = false;
+            boolean shouldCheckFlight = true;
+            if (tag instanceof CompoundTag) {
+                CompoundTag compoundTag = (CompoundTag) tag;
+                allowedFlight = compoundTag.getInt(KEY_ALLOWED_FLIGHT) != 0;
+                worldFlightEnabled = compoundTag.getInt(KEY_WORLDFLIGHT_ENABLED) != 0;
+                shouldCheckFlight = compoundTag.getInt(KEY_CHECK_FLIGHT) != 0;
+            }
+            fcap.setAllowedFlight(allowedFlight);
+            fcap.setWorldFlightEnabled(worldFlightEnabled);
+            fcap.setShouldCheckFlight(shouldCheckFlight);
+        });
     }
 }

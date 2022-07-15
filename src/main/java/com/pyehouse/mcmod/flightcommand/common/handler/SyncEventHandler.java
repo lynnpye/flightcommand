@@ -1,4 +1,4 @@
-package com.pyehouse.mcmod.flightcommand.server.handler;
+package com.pyehouse.mcmod.flightcommand.common.handler;
 
 import com.pyehouse.mcmod.flightcommand.common.network.ClientUpdater;
 import net.minecraft.world.entity.player.Player;

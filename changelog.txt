@@ -1,3 +1,7 @@
+Build: 1.18-1.6
+    hextun01:
+        Fixing problems with not saving values after death
+=======
 Build: 1.18-1.5
     hextun01:
         Seriously, need to pay better attention in future merges
