@@ -19,7 +19,7 @@ public class CapabilityProviderPlayers implements ICapabilitySerializable<Tag> {
     private static final Logger LOGGER = LogManager.getLogger();
 
     private final static String FLIGHT_NBT = "flight";
-    private IFlightCapability flightCapability = new FlightCapability();
+    private final IFlightCapability flightCapability = new FlightCapability();
     private final LazyOptional<IFlightCapability> flightCapLazyOptional = LazyOptional.of(() -> this.flightCapability);
 
     @Nonnull
@@ -57,14 +57,12 @@ public class CapabilityProviderPlayers implements ICapabilitySerializable<Tag> {
     }
 
     private final String KEY_ALLOWED_FLIGHT = "allowedFlight";
-    private final String KEY_WORLDFLIGHT_ENABLED = "worldFlightEnabled";
     private final String KEY_CHECK_FLIGHT = "checkFlight";
 
     private Tag writeTag() {
         CompoundTag tag = new CompoundTag();
         flightCapLazyOptional.ifPresent(fcap -> {
             tag.put(KEY_ALLOWED_FLIGHT, IntTag.valueOf(fcap.isAllowedFlight() ? 1 : 0));
-            tag.put(KEY_WORLDFLIGHT_ENABLED, IntTag.valueOf(fcap.isWorldFlightEnabled() ? 1 : 0));
             tag.put(KEY_CHECK_FLIGHT, IntTag.valueOf(fcap.isShouldCheckFlight() ? 1 : 0));
         });
         return tag;
@@ -73,16 +71,13 @@ public class CapabilityProviderPlayers implements ICapabilitySerializable<Tag> {
     private void readTag(Tag tag) {
         flightCapLazyOptional.ifPresent(fcap -> {
             boolean allowedFlight = false;
-            boolean worldFlightEnabled = false;
             boolean shouldCheckFlight = true;
             if (tag instanceof CompoundTag) {
                 CompoundTag compoundTag = (CompoundTag) tag;
                 allowedFlight = compoundTag.getInt(KEY_ALLOWED_FLIGHT) != 0;
-                worldFlightEnabled = compoundTag.getInt(KEY_WORLDFLIGHT_ENABLED) != 0;
                 shouldCheckFlight = compoundTag.getInt(KEY_CHECK_FLIGHT) != 0;
             }
             fcap.setAllowedFlight(allowedFlight);
-            fcap.setWorldFlightEnabled(worldFlightEnabled);
             fcap.setShouldCheckFlight(shouldCheckFlight);
         });
     }
