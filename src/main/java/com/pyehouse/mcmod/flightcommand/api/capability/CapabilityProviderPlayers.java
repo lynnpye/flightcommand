@@ -25,9 +25,7 @@ public class CapabilityProviderPlayers implements ICapabilitySerializable<Tag> {
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        var x = FlightCapability.CAPABILITY_FLIGHT.orEmpty(cap, flightCapLazyOptional);
-        x.isPresent();
-        return x;
+        return FlightCapability.CAPABILITY_FLIGHT.orEmpty(cap, flightCapLazyOptional);
     }
 
     public IFlightCapability getFlightCapability() {

@@ -12,7 +12,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.17-1.4'
+version = '1.17-1.5'
 group = 'com.pyehouse.flightcommand' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'flightcommand'
 
@@ -168,7 +168,7 @@ publishing {
     }
     repositories {
         maven {
-            url "file:///${project.projectDir}/mcmodsrepo"
+            url "file://${project.projectDir}/mcmodsrepo"
         }
     }
 }

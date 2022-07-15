@@ -1,3 +1,11 @@
+Build: 1.17-1.4
+    hextun01:
+        Fixed: should ignore fall damage while enabled
+=======
+Build: 1.17-1.4
+    hextun01:
+        Fixed: values not saving after death
+=======
 Build: 1.17-1.3
     hextun01:
         Fixed: so much was wrong with how the event handling was coded I don't even know how it worked at all
