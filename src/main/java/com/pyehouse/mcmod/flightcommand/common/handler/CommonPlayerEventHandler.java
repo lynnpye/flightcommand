@@ -38,6 +38,12 @@ public class CommonPlayerEventHandler {
             flightCap.setShouldCheckFlight(true);
         }
 
+        boolean weAllowFlight = flightCap.isWorldFlightEnabled() || flightCap.isAllowedFlight();
+
+        if (weAllowFlight) {
+            player.fallDistance = 0f;
+        }
+
         if (!flightCap.isShouldCheckFlight()) {
             return;
         }
@@ -46,7 +52,6 @@ public class CommonPlayerEventHandler {
         boolean isFlying = player.getAbilities().flying;
         boolean isGrounded = player.isOnGround();
         boolean modeAllowsFlight = player.isSpectator() || player.isCreative();
-        boolean weAllowFlight = flightCap.isWorldFlightEnabled() || flightCap.isAllowedFlight();
         boolean canFly = modeAllowsFlight || weAllowFlight;
 
         if (player.getAbilities().mayfly != canFly) {

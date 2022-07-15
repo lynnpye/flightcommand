@@ -1,3 +1,7 @@
+Build: 1.18-1.7
+    hextun01:
+        Fixed: ignore fall damage while enabled
+=======
 Build: 1.18-1.6
     hextun01:
         Fixing problems with not saving values after death

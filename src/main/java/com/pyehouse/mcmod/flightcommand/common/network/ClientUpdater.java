@@ -1,7 +1,6 @@
 package com.pyehouse.mcmod.flightcommand.common.network;
 
 import com.pyehouse.mcmod.flightcommand.api.capability.FlightCapability;
-import com.pyehouse.mcmod.flightcommand.api.capability.IFlightCapability;
 import com.pyehouse.mcmod.flightcommand.common.command.GameruleRegistrar;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.server.level.ServerPlayer;
