@@ -1,12 +1,12 @@
 flightcommand
 =============
-flightcommand adds the ability to provide creative flight in survival mode, 
+flightcommand adds the ability to provide creative flight in survival mode,
 both as a gamerule to affect all players, and as a command to provide flight selectively to specific
 users.
 
 ## Usage
 The gamerule is 'doCreativeFlight':
-    
+
     /gamerule doCreativeFlight true
 
 The command for individual flight is 'flight':
@@ -32,7 +32,11 @@ It's possible I've not got my environment quite right, but since then, I have to
     gradlew genIntellijRuns
     gradlew build
 
+<<<<<<< HEAD
 That's only if I want the effect of a 'clean build'. For normal builds I can just run a typical 
+=======
+That's only if I want the effect of a 'clean build'. For normal builds I can just run a typical
+>>>>>>> 1.16.5
 'gradlew build'.
 
 I can do that same sequence in the IDE, but again, I may have something misconfigured.
@@ -59,9 +63,9 @@ So, you'll see in the release history that at one point I released a fix for val
 you die.
 
 I'm using Capabilities [[1.16]](https://docs.minecraftforge.net/en/1.16.x/datastorage/capabilities/)
- [[1.17]](https://docs.minecraftforge.net/en/1.17.x/datastorage/capabilities/) 
- [[1.18]](https://docs.minecraftforge.net/en/1.18.x/datastorage/capabilities/) 
- [[1.19]](https://docs.minecraftforge.net/en/1.19.x/datastorage/capabilities/) to manage flight. Possibly
+[[1.17]](https://docs.minecraftforge.net/en/1.17.x/datastorage/capabilities/)
+[[1.18]](https://docs.minecraftforge.net/en/1.18.x/datastorage/capabilities/)
+[[1.19]](https://docs.minecraftforge.net/en/1.19.x/datastorage/capabilities/) to manage flight. Possibly
 overkill, in that they technically allow another mod to use this capability to manage flight. Unlikely.
 But I liked the serialization and attachment options and went with it. I'm rethinking things.
 
