@@ -1,6 +1,7 @@
 package com.pyehouse.mcmod.flightcommand.common.handler;
 
 import com.pyehouse.mcmod.flightcommand.api.capability.CapabilityProviderPlayers;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
@@ -15,7 +16,7 @@ public class CommonCapabilityAttachEventHandler {
     @SubscribeEvent
     public static void attachCapabilityToEntityHandler(AttachCapabilitiesEvent<Entity> event) {
         boolean capAdded = false;
-        for (var capkey : event.getCapabilities().keySet()) {
+        for (ResourceLocation capkey : event.getCapabilities().keySet()) {
             if (capkey.compareTo(FlightCapabilityResourceURL) == 0) {
                 capAdded = true;
             }
@@ -25,7 +26,6 @@ public class CommonCapabilityAttachEventHandler {
             if (entity instanceof Player) {
                 final CapabilityProviderPlayers capProvider = new CapabilityProviderPlayers();
                 event.addCapability(FlightCapabilityResourceURL, capProvider);
-                event.addListener(capProvider::invalidate);
             }
         }
     }
