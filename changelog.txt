@@ -1,6 +1,7 @@
 Build: 1.16-1.2
     hextun01:
         Made SyncEventHandler server only
+        Feature parity with newer versions
 ========
 Build: 1.16-1.1
     hextun01:
