@@ -29,13 +29,18 @@ public class NetworkSetup {
     }
 
     public static void registration() {
-        simpleChannel = NetworkRegistry.newSimpleChannel(simpleChannelURL, () -> MESSAGE_PROTOCOL_VERSION,
+        simpleChannel = NetworkRegistry.newSimpleChannel(
+                simpleChannelURL,
+                () -> MESSAGE_PROTOCOL_VERSION,
                 MESSAGE_PROTOCOL_VERSION::equals,
                 MESSAGE_PROTOCOL_VERSION::equals
         );
 
-        simpleChannel.registerMessage(APPLY_FLIGHT_ID, ClientUpdateMessage.class,
-                ClientUpdateMessage::encode, ClientUpdateMessage::decode,
+        simpleChannel.registerMessage(
+                APPLY_FLIGHT_ID,
+                ClientUpdateMessage.class,
+                ClientUpdateMessage::encode,
+                ClientUpdateMessage::decode,
                 ClientMessageReceiver::onMessageReceived,
                 Optional.of(PLAY_TO_CLIENT)
         );

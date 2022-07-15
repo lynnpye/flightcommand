@@ -20,16 +20,13 @@ public class CapabilityProviderPlayers implements ICapabilitySerializable<INBT> 
     private static final Logger LOGGER = LogManager.getLogger();
 
     private final static String FLIGHT_NBT = "flight";
-    private FlightCapability flightCapability = new FlightCapability();
+    private final IFlightCapability flightCapability = new FlightCapability();
+    private final LazyOptional<IFlightCapability> flightCapLazyOptional = LazyOptional.of(() -> this.flightCapability);
 
     @Nonnull
     @Override
     public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        if (FlightCapability.CAPABILITY_FLIGHT == cap) {
-            return (LazyOptional<T>)LazyOptional.of(() -> flightCapability);
-        }
-
-        return LazyOptional.empty();
+        return FlightCapability.CAPABILITY_FLIGHT.orEmpty(cap, flightCapLazyOptional);
     }
 
     @Override

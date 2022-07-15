@@ -1,8 +1,17 @@
 package com.pyehouse.mcmod.flightcommand.common.network;
 
+import com.pyehouse.mcmod.flightcommand.api.capability.FlightCapability;
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.DistExecutor;
+import net.minecraftforge.fml.LogicalSide;
+import net.minecraftforge.fml.network.NetworkEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.function.Supplier;
 
 public class ClientUpdateMessage {
     private static final Logger LOGGER = LogManager.getLogger();
@@ -52,6 +61,6 @@ public class ClientUpdateMessage {
 
     @Override
     public String toString() {
-        return "FlightCommandMessageToClient[flightAllowed=" + Boolean.toString(flightAllowed) + ",worldFlightEnabled=" + Boolean.toString(worldFlightEnabled) + "]";
+        return String.format("ClientUpdateMessage= flightAllowed=%s worldFlightEnabled=%s", Boolean.toString(flightAllowed), Boolean.toString(worldFlightEnabled));
     }
 }

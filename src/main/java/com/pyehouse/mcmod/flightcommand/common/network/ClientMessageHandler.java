@@ -1,18 +1,13 @@
 package com.pyehouse.mcmod.flightcommand.common.network;
 
 import com.pyehouse.mcmod.flightcommand.api.capability.FlightCapability;
-import com.pyehouse.mcmod.flightcommand.api.capability.IFlightCapability;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.LogicalSidedProvider;
 import net.minecraftforge.fml.network.NetworkEvent;
-import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Optional;
 import java.util.function.Supplier;
 
 public class ClientMessageHandler {
@@ -24,41 +19,29 @@ public class ClientMessageHandler {
         ctx.setPacketHandled(true);
 
         if (sideReceived != LogicalSide.CLIENT) {
-            LOGGER.warn("FlightCommandMessageToClient received on wrong side: " + ctx.getDirection().getReceptionSide());
+            LOGGER.warn("ClientUpdateMessage received on wrong side: " + ctx.getDirection().getReceptionSide());
             return;
         }
 
         if (!message.isMessageValid()) {
-            LOGGER.warn("FlightCommandMessageToClient was invalid: " + message.toString());
+            LOGGER.warn("ClientUpdateMessage was invalid: " + message.toString());
             return;
         }
 
-        try {
-            Optional<ClientWorld> clientWorld = LogicalSidedProvider.CLIENTWORLD.get(sideReceived);
-            if (!clientWorld.isPresent()) {
-                LOGGER.warn("FlightCommandMessageToClient context could not provide a ClientWorld");
-                return;
-            }
-
-            ctx.enqueueWork(() -> processMessage(message));
-        } catch (Exception e) {
-            LOGGER.error(ExceptionUtils.getStackTrace(e));
-        }
+        ctx.enqueueWork(() -> processMessage(message));
     }
 
     private static void processMessage(ClientUpdateMessage message) {
         PlayerEntity player = Minecraft.getInstance().player;
         if (player == null) {
-            LOGGER.warn("FlightCommandMessageToClient.processMessage: no player available from Minecraft.getInstance().player");
+            LOGGER.warn("ClientMessageHandler.processMessage: no player available from Minecraft.getInstance().player");
             return;
         }
 
-        IFlightCapability flightCap = player.getCapability(FlightCapability.CAPABILITY_FLIGHT).orElse(null);
-        if (flightCap == null) {
-            LOGGER.warn("FlightCommandMessageToClient.processMessage: No flight capability present, true OR false");
-            return;
-        }
+        ClientGameruleUpdater.updateGamerules(message.isWorldFlightEnabled());
 
-        flightCap.copyFrom(message);
+        player.getCapability(FlightCapability.CAPABILITY_FLIGHT).ifPresent(cap -> {
+            cap.copyFrom(message);
+        });
     }
 }

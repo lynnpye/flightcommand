@@ -9,7 +9,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class CommonPlayerEventHandler {
+public class PlayerTickHandler {
 
     private static final Logger LOGGER = LogManager.getLogger();
 
@@ -20,53 +20,50 @@ public class CommonPlayerEventHandler {
         }
 
         PlayerEntity player = event.player;
-        if (player == null) {
-            LOGGER.error("player is null, skipping");
-            return; // no player, leave
-        }
+
         IFlightCapability flightCap = player.getCapability(FlightCapability.CAPABILITY_FLIGHT).orElse(null);
 
         if (flightCap == null) {
             return; // no capability present for some reason
         }
 
-        boolean isCreativeFlightRuleEnabled = GameruleRegistrar.isCreativeFlightEnabled(player);
-
-        if (flightCap.isWorldFlightEnabled() != isCreativeFlightRuleEnabled) {
-            flightCap.setWorldFlightEnabled(isCreativeFlightRuleEnabled);
-            flightCap.setShouldCheckFlight(true);
-        }
-
-        boolean weAllowFlight = flightCap.isWorldFlightEnabled() || flightCap.isAllowedFlight();
-
-        if (weAllowFlight) {
-            player.fallDistance = 0f;
-        }
-
-        if (!flightCap.isShouldCheckFlight()) {
-            return;
-        }
-
+        boolean checkFlight = flightCap.isShouldCheckFlight();
         boolean triggerAbilitiesUpdate = false;
         boolean isFlying = player.abilities.flying;
         boolean isGrounded = player.isOnGround();
         boolean modeAllowsFlight = player.isSpectator() || player.isCreative();
+        boolean isCreativeFlightRuleEnabled = GameruleRegistrar.isCreativeFlightEnabled(player);
+        boolean weAllowFlight = flightCap.isAllowedFlight() || isCreativeFlightRuleEnabled;
+        boolean ignoreFallDamage = weAllowFlight;
         boolean canFly = modeAllowsFlight || weAllowFlight;
+        boolean shouldFly = isFlying && canFly;
+
+        if (ignoreFallDamage) {
+            player.fallDistance = 0f;
+        }
+
+        if (!player.abilities.mayfly && canFly) {
+            checkFlight = true;
+        }
+
+        //
+        // point of no return, start doing checks now
+        //
+        if (!checkFlight) {
+            return;
+        }
 
         if (player.abilities.mayfly != canFly) {
             player.abilities.mayfly = canFly;
             triggerAbilitiesUpdate = true;
         }
 
-        boolean shouldFly = isFlying;
-
         if (isGrounded) {
             shouldFly = false;
+        //not grounded so now either flying or falling
         } else if (isFlying != canFly) {
             if (!isFlying) {
                 shouldFly = canFly;
-            } else {
-                shouldFly = weAllowFlight;
             }
         }
 
