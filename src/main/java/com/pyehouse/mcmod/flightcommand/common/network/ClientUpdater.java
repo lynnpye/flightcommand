@@ -1,7 +1,6 @@
 package com.pyehouse.mcmod.flightcommand.common.network;
 
 import com.pyehouse.mcmod.flightcommand.api.capability.FlightCapability;
-import com.pyehouse.mcmod.flightcommand.api.capability.IFlightCapability;
 import com.pyehouse.mcmod.flightcommand.common.command.GameruleRegistrar;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.server.level.ServerPlayer;
@@ -23,12 +22,8 @@ public class ClientUpdater {
             return;
         }
 
-        IFlightCapability flightCap = player.getCapability(FlightCapability.CAPABILITY_FLIGHT).orElse(null);
-        if (flightCap == null) {
-            LOGGER.error("Missing IFlightCapability");
-            return;
-        }
-
-        sendFlightApplication(flightCap.isAllowedFlight(), GameruleRegistrar.isCreativeFlightEnabled(player), player);
+        player.getCapability(FlightCapability.CAPABILITY_FLIGHT).ifPresent(capFlight -> {
+            sendFlightApplication(capFlight.isAllowedFlight(), GameruleRegistrar.isCreativeFlightEnabled(player), player);
+        });
     }
 }

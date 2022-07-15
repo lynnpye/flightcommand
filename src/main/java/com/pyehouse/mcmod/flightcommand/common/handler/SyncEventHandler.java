@@ -17,16 +17,16 @@ public class SyncEventHandler {
 
     @SubscribeEvent
     public static void playerLoggedIn(PlayerEvent.PlayerLoggedInEvent event) {
-        syncPlayerData(event.getPlayer());
+        syncPlayerData(event.getEntity());
     }
 
     @SubscribeEvent
     public static void playerChangedWorld(PlayerEvent.PlayerChangedDimensionEvent event) {
-        syncPlayerData(event.getPlayer());
+        syncPlayerData(event.getEntity());
     }
 
     @SubscribeEvent
     public static void playerRespawn(PlayerEvent.PlayerRespawnEvent event) {
-        syncPlayerData(event.getPlayer());
+        syncPlayerData(event.getEntity());
     }
 }
