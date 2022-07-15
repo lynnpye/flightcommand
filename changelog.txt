@@ -1,4 +1,8 @@
-Build: 1.17-1.4
+Build: 1.17-1.6
+    hextun01:
+        Fixed: tbd
+=======
+Build: 1.17-1.5
     hextun01:
         Fixed: should ignore fall damage while enabled
 =======
