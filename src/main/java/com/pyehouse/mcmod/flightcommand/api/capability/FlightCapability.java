@@ -1,20 +1,18 @@
 package com.pyehouse.mcmod.flightcommand.api.capability;
 
 import com.pyehouse.mcmod.flightcommand.common.network.ClientUpdateMessage;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
-import net.minecraft.nbt.IntTag;
-import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
-import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public class FlightCapability implements IFlightCapability {
+    private static final Logger LOGGER = LogManager.getLogger();
+
     public static final ResourceLocation FlightCapabilityResourceURL =
             new ResourceLocation("flightcommand:flight_capability_provider_entities");
 

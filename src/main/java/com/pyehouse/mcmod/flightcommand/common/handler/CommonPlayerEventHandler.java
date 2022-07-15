@@ -5,7 +5,6 @@ import com.pyehouse.mcmod.flightcommand.api.capability.IFlightCapability;
 import com.pyehouse.mcmod.flightcommand.common.command.GameruleRegistrar;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -75,24 +74,6 @@ public class CommonPlayerEventHandler {
             player.onUpdateAbilities();
         }
         flightCap.setShouldCheckFlight(false);
-    }
-
-    private static boolean canRemoveFlightByGamemode(Player player) {
-        return !(player.isSpectator() || player.isCreative());
-    }
-
-    @SubscribeEvent
-    public static void onPlayerClone(PlayerEvent.Clone event) {
-        Player player = event.getPlayer();
-        IFlightCapability flightCap = player.getCapability(FlightCapability.CAPABILITY_FLIGHT).orElse(null);
-        if (flightCap == null) {
-            LOGGER.error("Missing IFlightCapability on player");
-            return;
-        }
-        IFlightCapability oldFlightCap = event.getOriginal().getCapability(FlightCapability.CAPABILITY_FLIGHT).orElse(null);
-        if (oldFlightCap != null) {
-            flightCap.copyFrom(oldFlightCap);
-        }
     }
 
 }

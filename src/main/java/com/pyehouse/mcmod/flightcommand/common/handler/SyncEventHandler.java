@@ -29,4 +29,5 @@ public class SyncEventHandler {
     public static void playerRespawn(PlayerEvent.PlayerRespawnEvent event) {
         syncPlayerData(event.getPlayer());
     }
+
 }

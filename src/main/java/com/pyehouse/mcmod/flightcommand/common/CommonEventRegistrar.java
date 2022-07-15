@@ -2,11 +2,7 @@ package com.pyehouse.mcmod.flightcommand.common;
 
 import com.pyehouse.mcmod.flightcommand.api.util.ModEventRegistrar;
 import com.pyehouse.mcmod.flightcommand.common.command.GameruleRegistrar;
-import com.pyehouse.mcmod.flightcommand.common.handler.CommandEventRegistryHandler;
-import com.pyehouse.mcmod.flightcommand.common.handler.CommonCapabilityAttachEventHandler;
-import com.pyehouse.mcmod.flightcommand.common.handler.CommonPlayerEventHandler;
-import com.pyehouse.mcmod.flightcommand.common.handler.RegisterCapabilitiesEventHandler;
-import com.pyehouse.mcmod.flightcommand.common.handler.SyncEventHandler;
+import com.pyehouse.mcmod.flightcommand.common.handler.*;
 import com.pyehouse.mcmod.flightcommand.common.network.NetworkSetup;
 import net.minecraftforge.eventbus.api.IEventBus;
 import org.apache.logging.log4j.LogManager;
@@ -28,6 +24,7 @@ public class CommonEventRegistrar extends ModEventRegistrar {
         forgeEventBus.register(CommandEventRegistryHandler.class);
         forgeEventBus.register(CommonCapabilityAttachEventHandler.class);
         forgeEventBus.register(CommonPlayerEventHandler.class);
+        forgeEventBus.register(PlayerEventHandler.class);
         forgeEventBus.register(SyncEventHandler.class);
     }
 
