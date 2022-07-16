@@ -23,9 +23,7 @@ public class CommonEventRegistrar extends ModEventRegistrar {
         forgeEventBus.register(RegisterCapabilitiesEventHandler.class);
         forgeEventBus.register(CommandEventRegistryHandler.class);
         forgeEventBus.register(CommonCapabilityAttachEventHandler.class);
-        forgeEventBus.register(CommonPlayerEventHandler.class);
-        forgeEventBus.register(SyncEventHandler.class);
-        forgeEventBus.register(PlayerEventHandler.class);
+        forgeEventBus.register(PlayerTickHandler.class);
     }
 
 }
