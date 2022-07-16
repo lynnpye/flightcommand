@@ -1,6 +1,6 @@
 Build: 1.18-1.8
     hextun01:
-        Fixed: tbd
+        Fixed: gamerules actually work properly now
 =======
 Build: 1.18-1.7
     hextun01:
