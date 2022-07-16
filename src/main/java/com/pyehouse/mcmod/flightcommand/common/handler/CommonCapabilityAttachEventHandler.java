@@ -26,7 +26,6 @@ public class CommonCapabilityAttachEventHandler {
             if (entity instanceof Player) {
                 final CapabilityProviderPlayers capProvider = new CapabilityProviderPlayers();
                 event.addCapability(FlightCapabilityResourceURL, capProvider);
-                event.addListener(capProvider::invalidate);
             }
         }
     }
