@@ -84,12 +84,10 @@ public class GiveFlightCommand {
         }
 
         boolean appliedFlightValue = BoolArgumentType.getBool(commandContext, CMD_value);
-        boolean worldFlightEnabled = GameruleRegistrar.isCreativeFlightEnabled(player);
         flightCap.setAllowedFlight(appliedFlightValue);
-        flightCap.setWorldFlightEnabled(worldFlightEnabled);
         flightCap.setShouldCheckFlight(true);
 
-        ClientUpdater.sendFlightApplication(appliedFlightValue, worldFlightEnabled, player);
+        ClientUpdater.sendFlightApplication(flightCap, player);
 
         commandContext.getSource().sendSuccess(makeTC(I18N_APPLY_SUCCESS, player.getGameProfile().getName(), Boolean.toString(appliedFlightValue)), true);
 
