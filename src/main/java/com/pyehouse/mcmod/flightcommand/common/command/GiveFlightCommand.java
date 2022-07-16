@@ -14,7 +14,6 @@ import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -65,7 +64,7 @@ public class GiveFlightCommand {
     }
 
     static Component makeTC(String id, String... extra) {
-        return new TranslatableComponent(id, (Object[]) extra);
+        return Component.translatable(id, (Object[]) extra);
     }
 
     static int applyFlightCommand(CommandContext<CommandSourceStack> commandContext) throws CommandSyntaxException {
@@ -85,12 +84,10 @@ public class GiveFlightCommand {
         }
 
         boolean appliedFlightValue = BoolArgumentType.getBool(commandContext, CMD_value);
-        boolean worldFlightEnabled = GameruleRegistrar.isCreativeFlightEnabled(player);
         flightCap.setAllowedFlight(appliedFlightValue);
-        flightCap.setWorldFlightEnabled(worldFlightEnabled);
         flightCap.setShouldCheckFlight(true);
 
-        ClientUpdater.sendFlightApplication(appliedFlightValue, worldFlightEnabled, player);
+        ClientUpdater.sendFlightApplication(flightCap, player);
 
         commandContext.getSource().sendSuccess(makeTC(I18N_APPLY_SUCCESS, player.getGameProfile().getName(), Boolean.toString(appliedFlightValue)), true);
 
