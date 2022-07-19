@@ -1,3 +1,7 @@
+Build: 1.18-1.9
+    hextun01:
+        Fixed: /flight command actually carries through death properly (was fixed, then broken, now fixed again)
+=======
 Build: 1.18-1.8
     hextun01:
         Fixed: gamerules actually work properly now
