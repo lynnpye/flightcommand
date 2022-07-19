@@ -19,14 +19,9 @@ public class ClientConfigHandler {
     }
 
     public static class ClientConfig {
-        public final ForgeConfigSpec.BooleanValue bogusBooleanOption;
 
         public ClientConfig(ForgeConfigSpec.Builder builder) {
-            builder.push("selection");
-            bogusBooleanOption = builder
-                    .comment("Some random bogus option. True or false, doesn't matter.")
-                    .define("bogusBooleanOption", false);
-            builder.pop();
+
         }
     }
 }

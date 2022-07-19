@@ -18,8 +18,18 @@ public class CommonConfigHandler {
     }
 
     public static class CommonConfig {
-        public CommonConfig(ForgeConfigSpec.Builder builder) {
+        public final ForgeConfigSpec.BooleanValue enableGameruleOnWorldStart;
 
+        public CommonConfig(ForgeConfigSpec.Builder builder) {
+            builder.push("Flight Command");
+            enableGameruleOnWorldStart = builder
+                    .comment("Enable gamerule doCreativeFlight on world start")
+                            .define("enableGameruleOnWorldStart", false);
+            builder.pop();
+        }
+
+        public boolean isEnableGameruleOnWorldStart() {
+            return this.enableGameruleOnWorldStart.get();
         }
     }
 }
