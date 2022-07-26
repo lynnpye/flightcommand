@@ -7,6 +7,7 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.pyehouse.mcmod.flightcommand.api.capability.FlightCapability;
 import com.pyehouse.mcmod.flightcommand.api.capability.IFlightCapability;
+import com.pyehouse.mcmod.flightcommand.common.handler.CommonConfigHandler;
 import com.pyehouse.mcmod.flightcommand.common.network.ClientUpdater;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -21,7 +22,6 @@ import org.apache.logging.log4j.Logger;
 public class GiveFlightCommand {
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public static final String CMD_command = "flight";
     public static final String CMD_player = "player";
     public static final String CMD_value = "value";
 
@@ -32,7 +32,7 @@ public class GiveFlightCommand {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         LiteralArgumentBuilder<CommandSourceStack> giveFlightCommand =
-        Commands.literal(CMD_command)
+        Commands.literal(CommonConfigHandler.COMMON.flightCommand.get())
                 .requires((commandSource) -> commandSource.hasPermission(1))
                 .then(
                     Commands.argument(CMD_player, EntityArgument.player())
