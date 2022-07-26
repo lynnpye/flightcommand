@@ -1,93 +1,56 @@
+Build: 1.18-1.11
+    hextun01:
+        Feature: New common config option to change which command enables flight (e.g. if you prefer /gofly playername true)
+========
 Build: 1.18-1.10
     hextun01:
         Feature: New common config option to enable the gamerule on world start, useful for dedicated servers
-=======
+========
 Build: 1.18-1.9
     hextun01:
         Fixed: /flight command actually carries through death properly (was fixed, then broken, now fixed again)
-=======
+========
 Build: 1.18-1.8
     hextun01:
         Fixed: gamerules actually work properly now
-=======
+========
 Build: 1.18-1.7
     hextun01:
         Fixed: ignore fall damage while enabled
-=======
+========
 Build: 1.18-1.6
     hextun01:
         Fixing problems with not saving values after death
-=======
+========
 Build: 1.18-1.5
     hextun01:
         Seriously, need to pay better attention in future merges
-=======
+========
 Build: 1.18-1.4
     hextun01:
         Fixed mods.toml dependency version numbers
-=======
+========
 Build: 1.18-1.3
     hextun01:
         Many fixes (logic and networking) with updates from lower versions
-=======
+========
 Build: 1.18-1.2
     hextun01:
         Fixed cloning issue
-=======
+========
 Build: 1.18-1.1
     hextun01:
         New naming scheme
-=======
-Build: 1.17-1.6
-    hextun01:
-        Fixed: tbd
-=======
-Build: 1.17-1.5
-    hextun01:
-        Fixed: should ignore fall damage while enabled
-=======
-Build: 1.17-1.4
-    hextun01:
-        Fixed: values not saving after death
-=======
-Build: 1.17-1.3
-    hextun01:
-        Fixed: so much was wrong with how the event handling was coded I don't even know how it worked at all
-        Should be much much better now, including proper dedicated server support (still required on both sides)
-=======
-Build: 1.16-1.2
-    hextun01:
-        Made SyncEventHandler server only
-        Feature parity with newer versions
-========
-Build: 1.16-1.1
-    hextun01:
-        Fixed: so much was wrong with how the event handling was coded I don't even know how it worked at all
-        Should be much much better now, including proper dedicated server support (still required on both sides)
-========
-Build: 1.17-1.2
-    hextun01:
-        Force flight checks for the first 40 (currently-non-configurable) ticks of player time.
-        If you log in, can fly, aren't on the ground, and aren't flying, you should be; and now you will be.
-========
-Build: 1.17-1.1
-    hextun01:
-        New numbering scheme
-        Fixed player cloning issue
 ========
 Build: 1.3
     hextun01:
         Updated: 1.18 compatibility
-=========
-Build: 1.2
-    hextun01:
-        Updated: 1.17 compatibility
 ========
 Build: 1.1
     hextun01:
         Fixed: gamerule doesn't reapply on restart and other issues
 
-=========
+========
 Build: 1.0
 	hextun01:
 		Initial version
