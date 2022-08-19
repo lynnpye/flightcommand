@@ -60,7 +60,8 @@ public class GiveFlightCommand {
             return 0;
         }
 
-        commandContext.getSource().sendSuccess(makeTC(I18N_QUERY_SUCCESS, player.getGameProfile().getName(), Boolean.toString(flightCap.isAllowedFlight())), false);
+        commandContext.getSource().sendSuccess(makeTC(I18N_QUERY_SUCCESS, player.getGameProfile().getName(),
+                Boolean.toString(flightCap.isAllowedFlight())), false);
 
         return 1;
     }
@@ -91,7 +92,8 @@ public class GiveFlightCommand {
 
         ClientUpdater.sendFlightApplication(flightCap, player);
 
-        commandContext.getSource().sendSuccess(makeTC(I18N_APPLY_SUCCESS, player.getGameProfile().getName(), Boolean.toString(appliedFlightValue)), true);
+        commandContext.getSource().sendSuccess(makeTC(I18N_APPLY_SUCCESS, player.getGameProfile().getName(),
+                Boolean.toString(appliedFlightValue)), true);
 
         return 1;
     }

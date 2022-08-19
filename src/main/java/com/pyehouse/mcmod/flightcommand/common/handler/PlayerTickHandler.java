@@ -27,54 +27,74 @@ public class PlayerTickHandler {
             return; // no capability present for some reason
         }
 
-        boolean checkFlight = flightCap.isShouldCheckFlight();
-        boolean triggerAbilitiesUpdate = false;
-        boolean isFlying = player.abilities.flying;
-        boolean isGrounded = player.isOnGround();
         boolean modeAllowsFlight = player.isSpectator() || player.isCreative();
-        boolean isCreativeFlightRuleEnabled = GameruleRegistrar.isCreativeFlightEnabled(player);
-        boolean weAllowFlight = flightCap.isAllowedFlight() || isCreativeFlightRuleEnabled;
-        boolean ignoreFallDamage = weAllowFlight;
+        boolean weAllowFlight = flightCap.isAllowedFlight() || GameruleRegistrar.isCreativeFlightEnabled(player);
         boolean canFly = modeAllowsFlight || weAllowFlight;
-        boolean shouldFly = isFlying && canFly;
+        boolean checkFlight = flightCap.isShouldCheckFlight();
+        boolean ignoreFallDamage = weAllowFlight;
 
+        // when we allow flight, we ignore fall damage
+        // do this if nothing else
         if (ignoreFallDamage) {
             player.fallDistance = 0f;
         }
 
+        // the universe wants this player to be allowed to fly but they are not currently allowed to do so
+        // fix this and make note that we also need to check actual flight status further down
         if (!player.abilities.mayfly && canFly) {
             checkFlight = true;
         }
 
-        //
+        // determine whether we are supposed to check for actual flying now, whether because of our own explicit state transition
+        // or because we want to fix mayfly?
         // point of no return, start doing checks now
-        //
         if (!checkFlight) {
+            flightCap.setShouldCheckFlight(false);
+            flightCap.setFlying(player.abilities.flying);
             return;
         }
 
+        boolean triggerAbilitiesUpdate = false;
+
+        // either suppress mayfly because both we and the mode do not try to support it
+        // or enable mayfly because one or both of us support it
+        // if it changes, make note we need to update abilities
         if (player.abilities.mayfly != canFly) {
             player.abilities.mayfly = canFly;
             triggerAbilitiesUpdate = true;
         }
 
-        if (isGrounded) {
-            shouldFly = false;
-        //not grounded so now either flying or falling
-        } else if (isFlying != canFly) {
-            if (!isFlying) {
-                shouldFly = canFly;
-            }
-        }
-
-        if (shouldFly != isFlying) {
-            player.abilities.flying = shouldFly;
+        /*
+         * Now we are trying to determine the correct value of 'player.abilities.flying'
+         */
+        if (player.isOnGround()) {
+            player.abilities.flying = false;
             triggerAbilitiesUpdate = true;
+        } else if (player.abilities.flying && !canFly) {
+            // we really and truly should not be able to fly
+            // but the ability is still enabled
+            // fix that
+            player.abilities.flying = false;
+            triggerAbilitiesUpdate = true;
+        } else {
+            // we are in the air
+            // we are not flying but falling
+            // the player is supposed to be able to fly (by us or by mode)
+
+            // if by us
+            if (weAllowFlight && player.abilities.flying != flightCap.isFlying()) {
+                player.abilities.flying = flightCap.isFlying();
+                triggerAbilitiesUpdate = true;
+            }
+            // if by mode, we don't care
         }
 
+        // Finis
         if (triggerAbilitiesUpdate) {
             player.onUpdateAbilities();
         }
+
+        flightCap.setFlying(player.abilities.flying);
         flightCap.setShouldCheckFlight(false);
     }
 

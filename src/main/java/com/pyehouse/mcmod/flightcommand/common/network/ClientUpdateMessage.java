@@ -1,17 +1,8 @@
 package com.pyehouse.mcmod.flightcommand.common.network;
 
-import com.pyehouse.mcmod.flightcommand.api.capability.FlightCapability;
-import net.minecraft.client.Minecraft;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.PacketBuffer;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.DistExecutor;
-import net.minecraftforge.fml.LogicalSide;
-import net.minecraftforge.fml.network.NetworkEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.util.function.Supplier;
 
 public class ClientUpdateMessage {
     private static final Logger LOGGER = LogManager.getLogger();
@@ -20,20 +11,22 @@ public class ClientUpdateMessage {
     private boolean flightAllowed;
     private boolean worldFlightEnabled;
     private boolean checkFlight;
+    private boolean flying;
 
     public boolean isMessageValid() { return messageValid; }
     public boolean isFlightAllowed() { return flightAllowed; }
     public boolean isWorldFlightEnabled() { return worldFlightEnabled; }
     public boolean isCheckFlight() { return checkFlight; }
+    public boolean isFlying() { return flying; }
 
     public ClientUpdateMessage() {
         messageValid = false;
     }
 
-    public ClientUpdateMessage(boolean flightAllowed, boolean worldFlightEnabled, boolean checkFlight) {
+    public ClientUpdateMessage(boolean flightAllowed, boolean worldFlightEnabled, boolean flying) {
         this.flightAllowed = flightAllowed;
         this.worldFlightEnabled = worldFlightEnabled;
-        this.checkFlight = checkFlight;
+        this.flying = flying;
         messageValid = true;
     }
 
@@ -43,6 +36,7 @@ public class ClientUpdateMessage {
             retval.flightAllowed = buf.readBoolean();
             retval.worldFlightEnabled = buf.readBoolean();
             retval.checkFlight = buf.readBoolean();
+            retval.flying = buf.readBoolean();
         } catch (IllegalArgumentException | IndexOutOfBoundsException e) {
             LOGGER.warn("Exception while reading FlightCommandMessageToClient: " + e);
             return retval;
@@ -57,10 +51,11 @@ public class ClientUpdateMessage {
         buf.writeBoolean(flightAllowed);
         buf.writeBoolean(worldFlightEnabled);
         buf.writeBoolean(checkFlight);
+        buf.writeBoolean(flying);
     }
 
     @Override
     public String toString() {
-        return String.format("ClientUpdateMessage= flightAllowed=%s worldFlightEnabled=%s", Boolean.toString(flightAllowed), Boolean.toString(worldFlightEnabled));
+        return String.format("ClientUpdateMessage= flightAllowed=%s worldFlightEnabled=%s flying=%s", flightAllowed, worldFlightEnabled, flying);
     }
 }
