@@ -2,7 +2,6 @@ package com.pyehouse.mcmod.flightcommand.api.capability;
 
 import com.pyehouse.mcmod.flightcommand.api.util.DataHelper;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.IntTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.core.Direction;
 import net.minecraftforge.common.capabilities.Capability;
@@ -58,12 +57,14 @@ public class CapabilityProviderPlayers implements ICapabilitySerializable<Tag> {
 
     private final String KEY_ALLOWED_FLIGHT = "allowedFlight";
     private final String KEY_CHECK_FLIGHT = "checkFlight";
+    private final String KEY_FLYING = "flying";
 
     private Tag writeTag() {
         CompoundTag tag = new CompoundTag();
         flightCapLazyOptional.ifPresent(fcap -> {
-            tag.put(KEY_ALLOWED_FLIGHT, IntTag.valueOf(fcap.isAllowedFlight() ? 1 : 0));
-            tag.put(KEY_CHECK_FLIGHT, IntTag.valueOf(fcap.isShouldCheckFlight() ? 1 : 0));
+            tag.putBoolean(KEY_ALLOWED_FLIGHT, fcap.isAllowedFlight());
+            tag.putBoolean(KEY_CHECK_FLIGHT, fcap.isShouldCheckFlight());
+            tag.putBoolean(KEY_FLYING, fcap.isFlying());
         });
         return tag;
     }
@@ -72,13 +73,16 @@ public class CapabilityProviderPlayers implements ICapabilitySerializable<Tag> {
         flightCapLazyOptional.ifPresent(fcap -> {
             boolean allowedFlight = false;
             boolean shouldCheckFlight = true;
+            boolean flying = false;
             if (tag instanceof CompoundTag) {
                 CompoundTag compoundTag = (CompoundTag) tag;
-                allowedFlight = compoundTag.getInt(KEY_ALLOWED_FLIGHT) != 0;
-                shouldCheckFlight = compoundTag.getInt(KEY_CHECK_FLIGHT) != 0;
+                allowedFlight = compoundTag.getBoolean(KEY_ALLOWED_FLIGHT);
+                shouldCheckFlight = compoundTag.getBoolean(KEY_CHECK_FLIGHT);
+                flying = compoundTag.getBoolean(KEY_FLYING);
             }
             fcap.setAllowedFlight(allowedFlight);
             fcap.setShouldCheckFlight(shouldCheckFlight);
+            fcap.setFlying(flying);
         });
     }
 }
