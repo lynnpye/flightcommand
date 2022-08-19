@@ -1,3 +1,8 @@
+Build: 1.17-1.10
+    hextun01:
+        Fixed: Cleaned up the flight handling logic (no more hovering on login)
+        Fixed: Dying in single player now carries over your flight capabilities
+========
 Build: 1.17-1.9
     hextun01:
         Feature: New common config option to change which command enables flight (e.g. if you prefer /gofly playername true)
