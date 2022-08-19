@@ -38,21 +38,7 @@ public class SyncEventHandler {
 
     @SubscribeEvent
     public static void playerClone(PlayerEvent.Clone event) {
-        if (event.isWasDeath()) {
-            event.getOriginal().reviveCaps();
-
-            event.getPlayer().getCapability(FlightCapability.CAPABILITY_FLIGHT).ifPresent(newCap -> {
-                CapabilityDispatcher capabilityDispatcher = event.getOriginal().getCapabilities();
-                for (var capPro : capabilityDispatcher.caps) {
-                    if (capPro instanceof CapabilityProviderPlayers) {
-                        CapabilityProviderPlayers myPro = (CapabilityProviderPlayers) capPro;
-                        newCap.copyFrom(myPro.getFlightCapability());
-                    }
-                }
-            });
-
-            event.getOriginal().invalidateCaps();
-        }
+        FlightCapability.cloneForPlayer(event.getOriginal(), event.getPlayer());
         syncPlayerData(event.getPlayer());
     }
 }
