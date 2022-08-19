@@ -5,6 +5,7 @@ import com.pyehouse.mcmod.flightcommand.api.capability.IFlightCapability;
 import com.pyehouse.mcmod.flightcommand.common.command.GameruleRegistrar;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -96,6 +97,15 @@ public class PlayerTickHandler {
 
         flightCap.setFlying(player.abilities.flying);
         flightCap.setShouldCheckFlight(false);
+    }
+
+    @SubscribeEvent
+    public static void playerClone(PlayerEvent.Clone event) {
+        event.getOriginal().getCapability(FlightCapability.CAPABILITY_FLIGHT).ifPresent(oldStore -> {
+            event.getPlayer().getCapability(FlightCapability.CAPABILITY_FLIGHT).ifPresent(newStore -> {
+                newStore.copyFrom(oldStore);
+            });
+        });
     }
 
 }

@@ -23,9 +23,10 @@ public class ClientUpdateMessage {
         messageValid = false;
     }
 
-    public ClientUpdateMessage(boolean flightAllowed, boolean worldFlightEnabled, boolean flying) {
+    public ClientUpdateMessage(boolean flightAllowed, boolean worldFlightEnabled, boolean checkFlight, boolean flying) {
         this.flightAllowed = flightAllowed;
         this.worldFlightEnabled = worldFlightEnabled;
+        this.checkFlight = checkFlight;
         this.flying = flying;
         messageValid = true;
     }

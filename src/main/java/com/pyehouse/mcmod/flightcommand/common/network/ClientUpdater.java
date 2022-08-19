@@ -16,7 +16,7 @@ public class ClientUpdater {
     private static final Logger LOGGER = LogManager.getLogger();
 
     private static void sendFlightApplication(boolean applyFlight, boolean flying, @Nonnull PlayerEntity player) {
-        ClientUpdateMessage msg = new ClientUpdateMessage(applyFlight, GameruleRegistrar.isCreativeFlightEnabled(player), flying);
+        ClientUpdateMessage msg = new ClientUpdateMessage(applyFlight, GameruleRegistrar.isCreativeFlightEnabled(player), true, flying);
         NetworkSetup.simpleChannel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayerEntity) player), msg);
     }
 

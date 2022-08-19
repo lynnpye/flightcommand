@@ -1,6 +1,7 @@
 Build: 1.16-1.5
     hextun01:
         Fixed: Cleaned up the flight handling logic (no more hovering on login)
+        Fixed: Dying in single player now carries over your flight capabilities
 ========
 Build: 1.16-1.4
     hextun01:
