@@ -36,11 +36,7 @@ public class SyncEventHandler {
 
     @SubscribeEvent
     public static void playerClone(PlayerEvent.Clone event) {
-        event.getOriginal().getCapability(FlightCapability.CAPABILITY_FLIGHT).ifPresent(oldStore -> {
-            event.getPlayer().getCapability(FlightCapability.CAPABILITY_FLIGHT).ifPresent(newStore -> {
-                newStore.copyFrom(oldStore);
-            });
-        });
+        FlightCapability.cloneForPlayer(event.getOriginal(), event.getPlayer());
         syncPlayerData(event.getPlayer());
     }
 }

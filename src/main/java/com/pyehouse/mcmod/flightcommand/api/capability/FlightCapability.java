@@ -1,6 +1,7 @@
 package com.pyehouse.mcmod.flightcommand.api.capability;
 
 import com.pyehouse.mcmod.flightcommand.common.network.ClientUpdateMessage;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.util.Direction;
@@ -110,6 +111,14 @@ public class FlightCapability implements IFlightCapability {
     @Override
     public String toString() {
         return String.format("FlightCapability{allowedFlight[%s] flying[%s]}", this.allowedFlight, this.flying);
+    }
+
+    public static void cloneForPlayer(PlayerEntity oldPlayer, PlayerEntity newPlayer) {
+        oldPlayer.getCapability(FlightCapability.CAPABILITY_FLIGHT).ifPresent(oldStore -> {
+            newPlayer.getCapability(FlightCapability.CAPABILITY_FLIGHT).ifPresent(newStore -> {
+                newStore.copyFrom(oldStore);
+            });
+        });
     }
 
 }
