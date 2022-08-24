@@ -11,20 +11,23 @@ public class ClientUpdateMessage {
     private boolean flightAllowed;
     private boolean worldFlightEnabled;
     private boolean checkFlight;
+    private boolean flying;
 
     public boolean isMessageValid() { return messageValid; }
     public boolean isFlightAllowed() { return flightAllowed; }
     public boolean isWorldFlightEnabled() { return worldFlightEnabled; }
     public boolean isCheckFlight() { return checkFlight; }
+    public boolean isFlying() { return flying; }
 
     public ClientUpdateMessage() {
         messageValid = false;
     }
 
-    public ClientUpdateMessage(boolean flightAllowed, boolean worldFlightEnabled, boolean checkFlight) {
+    public ClientUpdateMessage(boolean flightAllowed, boolean worldFlightEnabled, boolean checkFlight, boolean flying) {
         this.flightAllowed = flightAllowed;
         this.worldFlightEnabled = worldFlightEnabled;
         this.checkFlight = checkFlight;
+        this.flying = flying;
         messageValid = true;
     }
 
@@ -34,6 +37,7 @@ public class ClientUpdateMessage {
             retval.flightAllowed = buf.readBoolean();
             retval.worldFlightEnabled = buf.readBoolean();
             retval.checkFlight = buf.readBoolean();
+            retval.flying = buf.readBoolean();
         } catch (IllegalArgumentException | IndexOutOfBoundsException e) {
             LOGGER.warn("Exception while reading FlightCommandMessageToClient: " + e);
             return retval;
@@ -48,10 +52,11 @@ public class ClientUpdateMessage {
         buf.writeBoolean(flightAllowed);
         buf.writeBoolean(worldFlightEnabled);
         buf.writeBoolean(checkFlight);
+        buf.writeBoolean(flying);
     }
 
     @Override
     public String toString() {
-        return String.format("ClientUpdateMessage= flightAllowed=%s worldFlightEnabled=%s", Boolean.toString(flightAllowed), Boolean.toString(worldFlightEnabled));
+        return String.format("ClientUpdateMessage= flightAllowed=%s worldFlightEnabled=%s flying=%s", flightAllowed, worldFlightEnabled, flying);
     }
 }

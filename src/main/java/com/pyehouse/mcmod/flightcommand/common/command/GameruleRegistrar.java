@@ -38,7 +38,7 @@ public class GameruleRegistrar {
             Key<BooleanValue> rule = GameRules.register(id, cat, ruleTypeBoolean);
             return rule;
         } catch (Exception e) {
-            LOGGER.error("Error setting up gamerules value", e);
+            LOGGER.error(String.format("Error setting up gamerules value: %s", ExceptionUtils.getStackTrace(e)));
         }
         return null;
     }
@@ -56,7 +56,7 @@ public class GameruleRegistrar {
         try {
             return player.getCommandSenderWorld().getGameRules().getBoolean(GameruleRegistrar.doCreativeFlight);
         } catch (Exception e) {
-            LOGGER.error(ExceptionUtils.getStackTrace(e));
+            LOGGER.error(String.format("stacktrace=%s", ExceptionUtils.getStackTrace(e)));
             return false;
         }
     }

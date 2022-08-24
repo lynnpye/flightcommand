@@ -9,6 +9,8 @@ public interface IFlightCapability {
     void setAllowedFlight(boolean allowedFlight);
     boolean isShouldCheckFlight();
     void setShouldCheckFlight(boolean checkFlight);
+    boolean isFlying();
+    void setFlying(boolean flying);
     void copyFrom(@Nonnull IFlightCapability other);
     void copyFrom(@Nonnull ClientUpdateMessage other);
 }

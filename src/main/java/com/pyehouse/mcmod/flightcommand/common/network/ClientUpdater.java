@@ -15,17 +15,17 @@ import javax.annotation.Nonnull;
 public class ClientUpdater {
     private static final Logger LOGGER = LogManager.getLogger();
 
-    private static void sendFlightApplication(boolean applyFlight, @Nonnull Player player) {
-        ClientUpdateMessage msg = new ClientUpdateMessage(applyFlight, GameruleRegistrar.isCreativeFlightEnabled(player), true);
+    private static void sendFlightApplication(boolean applyFlight, boolean flying, @Nonnull Player player) {
+        ClientUpdateMessage msg = new ClientUpdateMessage(applyFlight, GameruleRegistrar.isCreativeFlightEnabled(player), true, flying);
         NetworkSetup.simpleChannel.send(PacketDistributor.PLAYER.with(() -> (ServerPlayer) player), msg);
     }
 
     public static void sendFlightApplication(@Nonnull IFlightCapability flightCapability, @Nonnull Player player) {
-        sendFlightApplication(flightCapability.isAllowedFlight(), player);
+        sendFlightApplication(flightCapability.isAllowedFlight(), flightCapability.isFlying(), player);
     }
     public static void sendFlightApplication(@Nonnull ServerPlayer player) {
         player.getCapability(FlightCapability.CAPABILITY_FLIGHT).ifPresent(capFlight -> {
-            sendFlightApplication(capFlight.isAllowedFlight(), player);
+            sendFlightApplication(capFlight.isAllowedFlight(), capFlight.isFlying(), player);
         });
     }
 
